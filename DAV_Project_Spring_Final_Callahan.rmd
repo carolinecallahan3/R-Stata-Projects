@@ -1,0 +1,919 @@
+---
+title: Data Analysis and Visualization Report - Congressional Diversity and Its Impact
+  on Social Movements
+author: "Caroline Callahan"
+date: "May 2023"
+output:
+  html_document: default
+  pdf_document: default
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(repos = "https://cran.rstudio.com/")
+
+install.packages("tinytex")
+tinytex::install_tinytex(force = TRUE)
+install.packages("rmarkdown")
+```
+
+
+---
+
+
+**I. Background and Data Description**
+
+Social movements are essential to democracy because they allow the public to hold governments accountable when policy diverges from widely-held values and slows societal progress. Yet, how a government responds to a social movement, if at all, can have drastic implications for the movement’s success. The political opportunity structure, which encompasses characteristics of the political environment that influence actors’ access to the political decision-making process, is a key determinant of whether social movements can garner government action (Jeydel 2000; Hooghe 2005). Open structures offer political actors more avenues to put pressure on the government, while closed systems insulate officials from outside actors. Therefore, social change may be more possible when there is an open political opportunity structure. Openness arises from fewer party controls, less party unity, and more women in Congress, although these are not its only forms (Jeydel 2000). What underlies these characteristics is that they reduce restrictions like agenda-gatekeeping, policy stalemates, and ideological homogeneity that may hinder social movements from achieving success via the petitioning of government. Congressional representatives may be incentivized to respond to social movements that connect to their identity or resonate with their voter base (Jeydel 2000). Furthermore, a diverse and fragmented legislative body holds a diversity of interests that are more favorable toward underrepresented issues (Kitschelt 1986). 
+
+This report is concerned with how congressional diversity, an indicator of the openness of the political opportunity structure, affects the advancement of common social movement goals. Congressional diversity is measured over time via the changing proportions of African Americans, Asian Americans, Hispanic Americans, and women in both the United States House of Representatives and Senate. The number of congressional hearings held regarding the social movement topic serves as a proxy for government responsiveness, an approach common in the social movement literature (Jeydel 2000). In this study, hearings regarding civil rights and social welfare, two historically popular missions of social movements, are of interest.
+
+**H1:** Increasing percentages of African Americans, Asian Americans, and Hispanic Americans in Congress will positively correlate with increasing quantities of congressional hearings about social movements.  
+
+**H1a:** As the number of congressional representatives identifying as African Americans increases, the number of congressional hearings about social movements will positively correlate.
+
+**H1b:** As the number of congressional representatives identifying as Asian Americans increases, the number of congressional hearings about social movements will positively correlate.
+
+**H1c:** As the number of congressional representatives identifying as Hispanic Americans increases, the number of congressional hearings about social movements will positively correlate.
+
+**H1d:** As the number of congressional representatives identifying as women increases, the number of congressional hearings about social movements will positively correlate.
+
+The data used in this project was sourced from two different data sets: Brookings Institute’s *Vital Statistics Demographics of members of Congress* data set and the U.S. Policy Agendas Project’s *Congressional Hearings* data set. *Vital Statistics* is a decades-long project dedicated to collecting a variety of data related to Congress and its trends. Teams from the American Enterprise Institute and the Campaign Finance Institute helped to update the data set used in this project in November 2022. It was accessed from the Brookings Institute’s website. The U.S. Policy Agendas Project is directed by Bryan Jones from the University of Texas at Austin, in collaboration with a large staff representing many different American universities. The team uses archival sources to build data sets that track American policy agenda trends since 1940. The *Congressional Hearings* data set was accessed on the project’s website; it is part of the *Parliamentary and Legislative* data collection series.  
+
+
+---
+
+
+**II. Preprocessing and Data Cleaning**
+
+Since both the *Vital Statistics Demographics of Members of Congress* and *Congressional Hearings* data sets contained more information than needed, I pulled the data of interest into separate Excel spreadsheets. Tables 1-16 (African Americans in Congress), 1-17 (Asian Americans in Congress), 1-18 (Hispanic Americans in Congress), and 1-19 (Women in Congress) were used. In this new sheet, zeros were added to all of the blank cells in the Excel diversity data set to prevent errors arising in R Studio. I calculated what percentage of the total House and Senate bodies the representatives from each underrepresented group made up per Congress. Additionally, I created counts for the total number of African American, Asian American, and Hispanic American representatives present in each Congress in the Excel sheet. To edit the *Congressional Hearings* data set, the unit of analysis was transformed to be the Congress in order to match the unit of analysis of the diversity data set. Python was used to calculate the percentage of hearings concerning civil rights and social welfare out of the total hearings heard per Congress in both the House and Senate. Furthermore, the functions `replace()` and `is.na()` were used to replace the “NA” cells with zeros in the hearings data set. 
+
+
+```{r, warning=FALSE, echo=TRUE, results = "hide"}
+#Data Preprocessing
+
+#1. Loaded tidyverse
+library(tidyverse)
+
+#2. Loaded`readxl` package so Excel files can be read into R
+library(readxl)
+
+#3. Used the `read_excel` function to load the data sets into R Studio
+diversitydata <- read_excel("C:/Users/carol/R_Materials/congressional_diversity_pared_down_data.xlsx")
+
+househearingsdata <- read.csv("C:/Users/carol/R_Materials/house_congressional_issues.csv")
+
+senatehearingsdata <- read.csv("C:/Users/carol/R_Materials/senate_congressional_issues.csv")
+
+#5. Used the `replace()` function to replace the "NA" cells with zeroes in the senatehearingsdata data set.
+senatehearingsdata[is.na(senatehearingsdata)] <- 0
+```
+
+
+Although the *Demographics of Members of Congress* data set tracked congressional diversity since the 41st Congress through the 116th Congress, the *Congressional Hearings* data set only contained hearings information beginning with the 80th Congress through the 116th Congress. Therefore, in order to compare demographic trends against hearings trends, I had to narrow the focus of the diversity data to the window of the 80th to 116th Congresses. Moreover, for the correlation function in R to properly correlate the corresponding values between the two data sets at the Congress unit of analysis, the data sets had to have an equal number of rows so that the proper values overlapped. I created a `subset` of the diversity data from the pared-down Excel diversity data set, with demographic observations between the 80th to the 116th Congresses, to match the number of rows in the hearings data (spanning the 80th to the 116th Congresses).
+
+
+```{r, warning=FALSE, results="hide"}
+#Subset diversitydata to only include 80th-116th Congresses
+
+subset_diversitydata <- subset(diversitydata, diversitydata$Congress >= 80 & diversitydata$Congress <= 116)
+print(subset_diversitydata)
+```
+
+
+---
+
+
+**III. Key Descriptive Patterns**
+
+I created line graphs to understand the change in both variables of interest over time. I was particularly interested in whether both variables temporally increased; if so, it would be hard to identify a relationship between the two variables without being concerned about spuriousness. 
+
+I began by plotting the change in representation for each of the four historically underrepresented groups in both the House and the Senate since 1947 (the beginning of the 80th Congress) using `ggplot`. The following is the code for the change in African Americans in the House over time; the code sequence was repeated for each group's representation in both the House and the Senate.
+
+
+```{r, warning=FALSE, echo=TRUE, results="hide"}
+#Change in African Americans in the House Over Time
+
+library(ggplot2)
+plot1 <- ggplot(data = diversitydata, aes(x = Congress, y = PercAfricanAmericansinHouse)) + 
+  geom_line(color = "red") +
+  ggtitle("African Americans\nin the House") +
+  xlab("Congress") + 
+  scale_x_continuous(limits = c(80, 116), breaks = seq(80, 116, by = 4)) +
+  ylab("African American Reps (%)") +
+  scale_y_continuous(limits = c(0, 13), breaks = seq(0, 13, by = 1))
+
+print(plot1)
+```
+
+```{r, warning=FALSE, include=FALSE}
+#Change in African Americans in the Senate Over Time
+
+library(ggplot2)
+plot2 <- ggplot(data = diversitydata, aes(x = Congress, y = PercAfricanAmericansinSenate)) + 
+  geom_line(color = "red") +
+  ggtitle("African Americans\nin the Senate") +
+  xlab("Congress") + 
+  scale_x_continuous(limits = c(80, 116), breaks = seq(80, 116, by = 4)) +
+  ylab("African American Senators (%)") +
+  scale_y_continuous(limits = c(0, 13), breaks = seq(0, 13, by = 1))
+
+print(plot2)
+```
+
+```{r, warning=FALSE, include=FALSE}
+#Change in Asian Americans in the House Over Time
+
+library(ggplot2)
+plot3 <- ggplot(data = diversitydata, aes(x = Congress, y = PercAsianAmericansinHouse)) + 
+  geom_line(color = "blue") +
+  ggtitle("Asian Americans\nin the House") +
+  xlab("Congress") +
+  scale_x_continuous(limits = c(80, 116), breaks = seq(80, 116, by = 4)) +
+  ylab("Asian American Reps (%)") +
+  scale_y_continuous(limits = c(0, 13), breaks = seq(0, 13, by = 1))
+
+print(plot3)
+```
+
+```{r, warning=FALSE, include=FALSE}
+#Change in Asian Americans in the Senate Over Time
+
+library(ggplot2)
+plot4 <- ggplot(data = diversitydata, aes(x = Congress, y = PercAsianAmericansinSenate)) + 
+  geom_line(color = "blue") +
+  ggtitle("Asian Americans\nin the Senate") +
+  xlab("Congress") +
+  scale_x_continuous(limits = c(80, 116), breaks = seq(80, 116, by = 4)) +
+  ylab("Asian American Senators (%)") +
+  scale_y_continuous(limits = c(0, 13), breaks = seq(0, 13, by = 1))
+
+print(plot4)
+```
+
+```{r, warning=FALSE, include=FALSE}
+#Change in Hispanic Americans in the House Over Time
+
+library(ggplot2)
+plot5 <- ggplot(data = diversitydata, aes(x = Congress, y = PercHispanicAmericansinHouse)) + 
+  geom_line(color = "orange") +
+  ggtitle("Hispanic Americans\nin the House") +
+  xlab("Congress") +
+  scale_x_continuous(limits = c(80, 116), breaks = seq(80, 116, by = 4)) +
+  ylab("Hispanic American Reps (%)") +
+  scale_y_continuous(limits = c(0, 13), breaks = seq(0, 13, by = 1))
+
+print(plot5)
+```
+
+```{r, warning=FALSE, include=FALSE}
+#Change in Hispanic Americans in the Senate Over Time
+
+library(ggplot2)
+plot6 <- ggplot(data = diversitydata, aes(x = Congress, y = PercHispanicAmericansinSenate)) + 
+  geom_line(color = "orange") +
+  ggtitle("Hispanic Americans\nin the Senate") +
+  xlab("Congress") +
+  scale_x_continuous(limits = c(80, 116), breaks = seq(80, 116, by = 4)) +
+  ylab("Hispanic American Senators (%)") +
+  scale_y_continuous(limits = c(0, 13), breaks = seq(0, 13, by = 1))
+
+print(plot6)
+```
+
+
+```{r, warning=FALSE, include=FALSE}
+#Change in Women in the House Over Time
+
+library(ggplot2)
+plot7 <- ggplot(data = diversitydata, aes(x = Congress, y = PercWomeninHouse)) + 
+  geom_line(color = "purple") +
+  ggtitle("Women\nin the House") +
+  xlab("Congress") +
+  scale_x_continuous(limits = c(80, 116), breaks = seq(80, 116, by = 4)) +
+  ylab("Female Reps (%)") +
+  scale_y_continuous(limits = c(0, 30), breaks = seq(0, 30, by = 2))
+
+print(plot7)
+```
+
+```{r, warning=FALSE, include=FALSE}
+#Change in Women in the Senate Over Time
+
+library(ggplot2)
+plot8 <- ggplot(data = diversitydata, aes(x = Congress, y = PercWomeninSenate)) + 
+  geom_line(color = "purple") +
+  ggtitle("Women\nin the Senate") +
+  xlab("Congress") +
+  scale_x_continuous(limits = c(80, 116), breaks = seq(80, 116, by = 4)) +
+  ylab("Female Senators (%)") +
+  scale_y_continuous(limits = c(0, 30), breaks = seq(0, 30, by = 2))
+
+print(plot8)
+```
+
+
+After creating individual descriptive plots for each underrepresented group in Congress, I used the `grid.arrange` function to group the descriptive plots into a panel display.
+
+
+```{r, warning=FALSE}
+#Panel for Descriptive Plots
+
+library(grid)
+library(gridExtra)
+library(ggplot2)
+
+grid.arrange(
+  plot1 + theme(plot.title = element_text(size = 10), axis.title.x = element_text(size = 7), axis.title.y = element_text(size = 7), axis.text = element_text(size = 6)), plot3 + theme(plot.title = element_text(size = 10), axis.title.x = element_text(size = 7), axis.title.y = element_text(size = 7), axis.text = element_text(size = 6)), plot5 + theme(plot.title = element_text(size = 10), axis.title.x = element_text(size = 7), axis.title.y = element_text(size = 7), axis.text = element_text(size = 6)), plot7 + theme(plot.title = element_text(size = 10), axis.title.x = element_text(size = 7), axis.title.y = element_text(size = 7), axis.text = element_text(size = 6)), plot2 + theme(plot.title = element_text(size = 10), axis.title.x = element_text(size = 7), axis.title.y = element_text(size = 7), axis.text = element_text(size = 6)), plot4 + theme(plot.title = element_text(size = 10), axis.title.x = element_text(size = 7), axis.title.y = element_text(size = 7), axis.text = element_text(size = 6)), plot6 + theme(plot.title = element_text(size = 10), axis.title.x = element_text(size = 7), axis.title.y = element_text(size = 7), axis.text = element_text(size = 6)), plot8 + theme(plot.title = element_text(size = 10), axis.title.x = element_text(size = 7), axis.title.y = element_text(size = 7), axis.text = element_text(size = 6)), nrow = 2,
+             top = textGrob("Percentage of Congresspeople from Historically Underrepresented Groups\nin the House and Senate Over Time (80th - 116th Congresses)", gp = gpar(fontsize = 10, fontface = "bold"), 
+                            hjust = 0.5, vjust = 1, x = unit(0.5, "npc"), y = unit(0.98, "npc"))
+)
+```
+
+
+Unsurprisingly, the representation of these historically underrepresented groups has increased over time in both chambers of Congress, though at different rates and not monotonically. The number of African American and female representatives in both chambers has increased most substantially, while representation of Asian Americans and Hispanic Americans has lagged behind with some significant fluctuations in the Senate.
+
+
+```{r, warning=FALSE, include=FALSE}
+#Total Change in African Americans, Asian Americans, and Hispanic Americans in the House Over Time
+
+library(ggplot2)
+plot9 <- ggplot(data = diversitydata, aes(x = Congress, y = diversitydata$`TotalPercAA,AA,HAinHouse`)) + 
+  geom_line(color = "darkgreen") +
+  ggtitle("Total Percentage\nin the House") +
+  xlab("Congress") +
+  scale_x_continuous(limits = c(80, 116), breaks = seq(80, 116, by = 4)) +
+  ylab("Total Reps (%)") +
+  scale_y_continuous(limits = c(0, 30), breaks = seq(0, 30, by = 2))
+
+print(plot9)
+```
+
+```{r, warning=FALSE, include=FALSE}
+#Total Change in African Americans, Asian Americans, and Hispanic Americans in the Senate Over Time
+
+library(ggplot2)
+plot10 <- ggplot(data = diversitydata, aes(x = Congress, y = diversitydata$`TotalPer AA,AA,HAinSenate`)) + 
+  geom_line(color = "darkgreen") +
+  ggtitle("Total Percentage\nin the Senate") +
+  xlab("Congress") +
+  scale_x_continuous(limits = c(80, 116), breaks = seq(80, 116, by = 4)) +
+  ylab("Total Senators (%)") +
+  scale_y_continuous(limits = c(0, 30), breaks = seq(0, 30, by = 2))
+
+print(plot10)
+```
+
+
+After observing the trends for each group individually, I plotted the total change in African American, Asian American, and Hispanic American representation over time.
+
+
+```{r, warning=FALSE}
+#Panel for Total African Americans, Asian Americans, and Hispanic Americans in the House and Senate Over Time
+
+grid.arrange(
+  plot9 + theme(plot.title = element_text(size = 10), axis.title.x = element_text(size = 7), axis.title.y = element_text(size = 7), axis.text = element_text(size = 6)), plot10 + theme(plot.title = element_text(size = 10), axis.title.x = element_text(size = 7), axis.title.y = element_text(size = 7), axis.text = element_text(size = 6)), nrow = 1,
+             top = textGrob("Total Percentage of African American, Asian American, and Hispanic American\nCongresspeople in the House and Senate Over Time (80th - 116th Congresses)", gp = gpar(fontsize = 10, fontface = "bold"), 
+                            hjust = 0.5, vjust = 1, x = unit(0.5, "npc"), y = unit(0.98, "npc"))
+)
+```
+
+
+I then plotted the changing proportions of civil rights and social welfare hearings heard in both chambers of Congress over time, beginning with the 80th Congress in 1947, using a similar code sequence as before but with the *Congressional Hearings* data set.
+
+
+```{r, warning=FALSE, include=FALSE}
+#Civil Rights Hearings Heard Over Time in House
+
+library(ggplot2)
+plot11 <- ggplot(data = househearingsdata, aes(x = Congress, y = X2)) +
+  geom_line() +
+  ggtitle("Civil Rights Hearings\nin the House") +
+  xlab("Congress") +
+  scale_x_continuous(limits = c(80, 116), breaks = seq(80, 116, by = 4)) +
+  ylab("Civil Rights House Hearings (%)") +
+  scale_y_continuous(limits = c(0, 0.16), breaks = seq(0, 0.16, by = 0.01))
+
+print(plot11)
+```
+
+```{r, warning=FALSE, include=FALSE}
+#Civil Rights Hearings Heard  Over Time in Senate
+
+library(ggplot2)
+plot12 <- ggplot(data = senatehearingsdata, aes(x = Congress, y = X2)) + 
+  geom_line() +
+  ggtitle("Civil Rights Hearings\nin the Senate") +
+  xlab("Congress") +
+   scale_x_continuous(limits = c(80, 116), breaks = seq(80, 116, by = 4)) +
+  ylab("Civil Rights Senate Hearings (%)") +
+  scale_y_continuous(limits = c(0, 0.16), breaks = seq(0, 0.16, by = 0.01))
+
+print(plot12)
+```
+
+```{r, warning=FALSE, include=FALSE}
+#Social Welfare Hearings Heard Over Time in House
+
+library(ggplot2)
+plot13 <- ggplot(data = househearingsdata, aes(x = Congress, y = X13)) +
+  geom_line() +
+  ggtitle("Social Welfare Hearings\nin the House") +
+  xlab("Congress") +
+  scale_x_continuous(limits = c(80, 116), breaks = seq(80, 116, by = 4)) +
+  ylab("Social Welfare House Hearings (%)") +
+  scale_y_continuous(limits = c(0, 0.16), breaks = seq(0, 0.16, by = 0.01))
+
+print(plot13)
+```
+
+```{r, warning=FALSE, include=FALSE}
+#Social Welfare Hearings Heard Over Time in Senate
+
+library(ggplot2)
+plot14 <- ggplot(data = senatehearingsdata, aes(x = Congress, y = X13)) + 
+  geom_line() +
+  ggtitle("Social Welfare Hearings\nin the Senate") +
+  xlab("Congress") +
+  scale_x_continuous(limits = c(80, 116), breaks = seq(80, 116, by = 4)) +
+  ylab("Social Welfare Senate Hearings (%)") +
+  scale_y_continuous(limits = c(0, 0.16), breaks = seq(0, 0.16, by = 0.01))
+
+print(plot14)
+```
+
+
+I used the `grid.arrange` function once more to create a panel display for the hearings trends.
+
+
+```{r, warning=FALSE}
+#Panel for Hearings Heard in the House and Senate Over Time
+
+grid.arrange(
+  plot11 + theme(plot.title = element_text(size = 10), axis.title.x = element_text(size = 7), axis.title.y = element_text(size = 7), axis.text = element_text(size = 5)), plot13 + theme(plot.title = element_text(size = 10), axis.title.x = element_text(size = 7), axis.title.y = element_text(size = 7), axis.text = element_text(size = 5)), plot12 + theme(plot.title = element_text(size = 10), axis.title.x = element_text(size = 7), axis.title.y = element_text(size = 7), axis.text = element_text(size = 5)), plot14 + theme(plot.title = element_text(size = 10), axis.title.x = element_text(size = 7), axis.title.y = element_text(size = 7), axis.text = element_text(size = 5)), nrow = 2,
+             top = textGrob("Proportion of Civil Rights and Social Welfare Hearings\nOut of Total Hearings Heard in the House and Senate\nOver Time (80th - 116th Congresses)", gp = gpar(fontsize = 10, fontface = "bold"), 
+                            hjust = 0.5, vjust = 1, x = unit(0.5, "npc"), y = unit(0.98, "npc"))
+)
+```
+
+
+The number of civil rights and social welfare hearings entertained by Congress has followed a less steady path over time. Civil rights hearings hit a peak during the 83rd Congress in both the House and the Senate, which occurred during the early 1950s. The high rates of civil rights hearings beginning in the 1950s and continuing throughout the decade into the 1960s roughly mirrors the ongoing civil rights movement of the period. Interestingly, the proportion of civil rights hearings heard in the House spiked up again during the 116th Congress from 2019-2021, which coincides with the period during which George Floyd was killed and the Black Lives Matter movement was reignited. 
+
+Social welfare hearings in both chambers peaked during the Congresses of the late 1960s and early 1970s, which coincided with the era of Great Society social reforms. Social welfare reform was also a major issue in the late 1990s during President Clinton’s presidency, which is reflected by spikes around the time of the 104th and 106th Congresses.
+
+
+---
+
+
+**IV. Analaysis and Visualization**
+
+To test the hypotheses, I ran correlation tests between the level of congressional diversity and the proportion of civil rights and social welfare hearings heard by the House and Senate (both of which are ratio variables). The results varied; some underrepresented groups had stronger correlations with the number of hearings held in Congress compared to others, though the relationships were mostly weak to moderate.
+
+The following is the code run for the correlation between African American representation in the House and the percentage of civil rights hearings in the House. The basic code structure was replicated for each correlation test.
+
+
+```{r, warning=FALSE}
+#House African Americans x Civil Rights Hearings
+
+data1 <- data.frame(col1 = subset_diversitydata$Congress, col2 = subset_diversitydata$PercAfricanAmericansinHouse, col3 = househearingsdata$X2)
+print(data1)
+
+correlation <- cor.test(subset_diversitydata$PercAfricanAmericansinHouse, househearingsdata$X2)
+print(correlation)
+
+plot15 <- ggplot(data = data1, aes(x = col2, y = col3)) +
+  geom_point(color = "red") +
+  ggtitle("Hearings vs African Americans\nin the House (%)") +
+  xlab("African Americans in the House (%)") +
+  ylab("Hearings Heard in House (%)") +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  geom_text(x = 0.85 * max(subset_diversitydata$PercAfricanAmericansinHouse), y = 0.85 * max(househearingsdata$X2), label = paste("cor=", round(correlation$estimate, 3), "p=", round(correlation$p.value, 5)), size = 3)
+
+print(plot15)
+```
+
+
+The percentage of African Americans in the House and the percentage of civil rights hearings heard in the House per Congress has a statistically significant relationship; the p-value is small (< 0.05), therefore there is statistical evidence at the five percent significance level to reject the null hypothesis that there is no correlation between the two variables. It appears that African American representation and civil rights hearings heard in the House have a weak to moderate relationship (r = -0.372) although surprisingly, their covariation is negative, thus there is a lack of evidence to support the second part of **H1a** that as African American representation increases in Congress, so does the percentage of civil rights hearings held. 
+
+
+```{r, echo=FALSE, include=FALSE}
+#Senate African Americans x Civil Rights Hearings
+
+data1 <- data.frame(col1 = subset_diversitydata$Congress, col2 = subset_diversitydata$PercAfricanAmericansinSenate, col3 = senatehearingsdata$X2)
+print(data1)
+
+correlation <- cor.test(subset_diversitydata$PercAfricanAmericansinSenate, senatehearingsdata$X2)
+print(correlation)
+
+plot16 <- ggplot(data = data1, aes(x = col2, y = col3)) +
+  geom_point(color = "red") +
+  ggtitle("Hearings vs African Americans\nin the Senate (%)") +
+  xlab("African Americans in the Senate (%)") +
+  ylab("Hearings Heard in the Senate (%)") +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  geom_text(x = 0.85 * max(subset_diversitydata$PercAfricanAmericansinSenate), y = 0.85 * max(senatehearingsdata$X2), label = paste("cor=", round(correlation$estimate, 3), "p=", round(correlation$p.value, 5)), size = 3)
+
+print(plot16)
+```
+
+```{r, warning=FALSE, include=FALSE}
+#House Asian Americans x Civil Rights Hearings
+
+data1 <- data.frame(col1 = subset_diversitydata$Congress, col2 = subset_diversitydata$PercAsianAmericansinHouse, col3 = househearingsdata$X2)
+print(data1)
+
+correlation <- cor.test(subset_diversitydata$PercAsianAmericansinHouse, househearingsdata$X2)
+print(correlation)
+
+plot17 <- ggplot(data = data1, aes(x = col2, y = col3)) +
+  geom_point(color = "blue") +
+  ggtitle("Hearings vs Asian Americans\nin the House (%)") +
+  xlab("Asian Americans in the House (%)") +
+  ylab("Hearings Heard in the House (%)") +
+  geom_smooth(method = "lm", se = FALSE, color = "blue") +
+  geom_text(x = 0.85 * max(subset_diversitydata$PercAsianAmericansinHouse), y = 0.85 * max(househearingsdata$X2), label = paste("cor=", round(correlation$estimate, 3), "p=", round(correlation$p.value, 5)), size = 3)
+
+print(plot17)
+```
+
+```{r, echo=FALSE, eval=TRUE}
+#Senate Asian Americans x Civil Rights Hearings
+
+data1 <- data.frame(col1 = subset_diversitydata$Congress, col2 = subset_diversitydata$PercAsianAmericansinSenate, col3 = senatehearingsdata$X2)
+print(data1)
+
+correlation <- cor.test(subset_diversitydata$PercAsianAmericansinSenate, senatehearingsdata$X2)
+print(correlation)
+
+plot18 <- ggplot(data = data1, aes(x = col2, y = col3)) +
+  geom_point(color = "blue") +
+  ggtitle("Hearings vs Asian Americans\nin the Senate (%)") +
+  xlab("Asian Americans in the Senate (%)") +
+  ylab("Hearings Heard in Senate (%)") +
+  geom_smooth(method = "lm", se = FALSE, color = "blue") +
+  geom_text(x = 0.85 * max(subset_diversitydata$PercAsianAmericansinSenate), y = 0.85 * max(senatehearingsdata$X2), label = paste("cor=", round(correlation$estimate, 3), "p=", round(correlation$p.value, 5)), size = 3)
+
+print(plot18)
+```
+
+
+The relationship between the percentage of Asian Americans in the Senate and the percentage of civil rights hearings heard in the Senate per Congress is also statistically significant with a small p-value  (< 0.05) and a weak to moderate correlation (r = -0.402). Again, the correlation is negative, which is the opposite of the predicted direction given in **H1b**.
+
+
+```{r, include=FALSE}
+#House Hispanic Americans x Civil Rights Hearings
+
+data1 <- data.frame(col1 = subset_diversitydata$Congress, col2 = subset_diversitydata$PercHispanicAmericansinHouse, col3 = househearingsdata$X2)
+print(data1)
+
+correlation <- cor.test(subset_diversitydata$PercHispanicAmericansinHouse, househearingsdata$X2)
+print(correlation)
+
+plot19 <- ggplot(data = data1, aes(x = col2, y = col3)) +
+  geom_point(color = "orange") +
+  ggtitle("Hearings vs Hispanic Americans\nin the House (%)") +
+  xlab("Hispanic Americans in the House (%)") +
+  ylab("Hearings Heard in House (%)") +
+  geom_smooth(method = "lm", se = FALSE, color = "orange") +
+  geom_text(x = 0.85 * max(subset_diversitydata$PercHispanicAmericansinHouse), y = 0.85 * max(househearingsdata$X2), label = paste("cor=", round(correlation$estimate, 3), "p=", round(correlation$p.value, 5)), size = 3)
+
+print(plot19)
+```
+
+
+```{r, include=FALSE}
+#Senate Hispanic Americans x Civil Rights Hearings
+
+data1 <- data.frame(col1 = subset_diversitydata$Congress, col2 = subset_diversitydata$PercHispanicAmericansinSenate, col3 = senatehearingsdata$X2)
+print(data1)
+
+correlation <- cor.test(subset_diversitydata$PercHispanicAmericansinSenate, senatehearingsdata$X2)
+print(correlation)
+
+plot20 <- ggplot(data = data1, aes(x = col2, y = col3)) +
+  geom_point(color = "orange") +
+  ggtitle("Hearings vs Hispanic Americans\nin the Senate (%)") +
+  xlab("Hispanic Americans in the Senate (%)") +
+  ylab("Hearings Heard in the Senate (%)") +
+  geom_smooth(method = "lm", se = FALSE, color = "orange") +
+  geom_text(x = 0.85 * max(subset_diversitydata$PercHispanicAmericansinSenate), y = 0.85 * max(senatehearingsdata$X2), label = paste("cor=", round(correlation$estimate, 3), "p=", round(correlation$p.value, 5)), size = 3)
+
+print(plot20)
+```
+
+
+```{r, include=FALSE}
+#House Women x Civil Rights Hearings
+
+data1 <- data.frame(col1 = subset_diversitydata$Congress, col2 = subset_diversitydata$PercWomeninHouse, col3 = househearingsdata$X2)
+print(data1)
+
+correlation <- cor.test(subset_diversitydata$PercWomeninHouse, househearingsdata$X2)
+print(correlation)
+
+plot21 <- ggplot(data = data1, aes(x = col2, y = col3)) +
+  geom_point(color = "purple") +
+  ggtitle("Hearings vs Women\nin the House (%)") +
+  xlab("Women in the House (%)") +
+  ylab("Hearings Heard in the Senate(%)") +
+  geom_smooth(method = "lm", se = FALSE, color = "purple") +
+  geom_text(x = 0.85 * max(subset_diversitydata$PercWomeninHouse), y = 0.85 * max(househearingsdata$X2), label = paste("cor=", round(correlation$estimate, 3), "p=", round(correlation$p.value, 5)), size = 3)
+
+print(plot21)
+```
+
+
+```{r, include=FALSE}
+#Senate Women x Civil Rights Hearings
+
+data1 <- data.frame(col1 = subset_diversitydata$Congress, col2 = subset_diversitydata$PercWomeninSenate, col3 = senatehearingsdata$X2)
+print(data1)
+
+correlation <- cor.test(subset_diversitydata$PercWomeninSenate, senatehearingsdata$X2)
+print(correlation)
+
+plot22 <- ggplot(data = data1, aes(x = col2, y = col3)) +
+  geom_point(color = "purple") +
+  ggtitle("Hearings vs Women\nin the Senate (%)") +
+  xlab("Women in the Senate (%)") +
+  ylab("Hearings Heard in the Senate (%)") +
+  geom_smooth(method = "lm", se = FALSE, color = "purple") +
+  geom_text(x = 0.85 * max(subset_diversitydata$PercWomeninSenate), y = 0.85 * max(senatehearingsdata$X2), label = paste("cor=", round(correlation$estimate, 3), "p=", round(correlation$p.value, 5)), size = 3)
+
+print(plot22)
+```
+
+
+```{r, warning=FALSE, include=FALSE}
+#Total House African Americans, Asian Americans, and Hispanic Americans x Civil Rights Hearings
+
+data1 <- data.frame(col1 = subset_diversitydata$Congress, col2 = subset_diversitydata$`TotalPercAA,AA,HAinHouse`, col3 = househearingsdata$X2)
+print(data1)
+
+correlation <- cor.test(subset_diversitydata$`TotalPercAA,AA,HAinHouse`, househearingsdata$X2)
+print(correlation)
+
+plot23 <- ggplot(data = data1, aes(x = col2, y = col3)) +
+  geom_point(color = "darkgreen") +
+  ggtitle("Hearings vs Total African Americans, Asian Americans,\nand Hispanic Americans in the House (%)") +
+  xlab("Total African Americans, Asian Americans,\nand Hispanic Americans in the House (%)") +
+   scale_x_continuous(limits = c(0, 28), breaks = seq(0, 28, by = 4)) +
+  ylab("Hearings Heard in the House (%)") +
+   scale_y_continuous(limits = c(0, 0.08), breaks = seq(0, .08, by = 0.01)) +
+  geom_smooth(method = "lm", se = FALSE, color = "darkgreen") +
+  geom_text(x = 0.85 * max(subset_diversitydata$`TotalPercAA,AA,HAinHouse`), y = 0.85 * max(househearingsdata$X2), label = paste("cor=", round(correlation$estimate, 3), "p=", round(correlation$p.value, 5)), size = 3)
+
+print(plot23)
+```
+
+
+```{r, warning=FALSE, include=FALSE}
+#Total Senate African Americans, Asian Americans, and Hispanic Americans x Civil Rights Hearings
+
+data1 <- data.frame(col1 = subset_diversitydata$Congress, col2 = subset_diversitydata$`TotalPer AA,AA,HAinSenate`, col3 = senatehearingsdata$X2)
+print(data1)
+
+correlation <- cor.test(subset_diversitydata$`TotalPer AA,AA,HAinSenate`, senatehearingsdata$X2)
+print(correlation)
+
+plot24 <- ggplot(data = data1, aes(x = col2, y = col3)) +
+  geom_point(color = "darkgreen") +
+  ggtitle("Hearings vs Total African Americans, Asian Americans,\nand Hispanic Americans in the Senate (%)") +
+  xlab("Total African Americans, Asian Americans,\nand Hispanic Americans in the Senate (%)") +  scale_x_continuous(limits = c(0, 28), breaks = seq(0, 28, by = 4)) +
+  ylab("Hearings Heard in the House (%)") +
+   scale_y_continuous(limits = c(0, 0.08), breaks = seq(0, 0.08, by = 0.01)) +
+  geom_smooth(method = "lm", se = FALSE, color = "darkgreen") +
+  geom_text(x = 0.85 * max(subset_diversitydata$`TotalPer AA,AA,HAinSenate`), y = 0.85 * max(senatehearingsdata$X2), label = paste("cor=", round(correlation$estimate, 3), "p=", round(correlation$p.value, 5)), size = 3)
+
+print(plot24)
+```
+
+
+```{r, include=FALSE}
+#House African Americans x Social Welfare Hearings
+
+data1 <- data.frame(col1 = subset_diversitydata$Congress, col2 = subset_diversitydata$PercAfricanAmericansinHouse, col3 = househearingsdata$X13)
+print(data1)
+
+correlation <- cor.test(subset_diversitydata$PercAfricanAmericansinHouse, househearingsdata$X13)
+print(correlation)
+
+plot25 <- ggplot(data = data1, aes(x = col2, y = col3)) +
+  geom_point(color = "red") +
+  ggtitle("Hearings vs African Americans\nin the House (%)") +
+  xlab("African Americans in the House (%)") +
+  ylab("Hearings Heard in the House (%)") +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  geom_text(x = 0.85 * max(subset_diversitydata$PercAfricanAmericansinHouse), y = 0.85 * max(househearingsdata$X13), label = paste("cor=", round(correlation$estimate, 3), "p=", round(correlation$p.value, 5)), size = 3)
+
+print(plot25)
+```
+
+
+```{r, include=FALSE}
+#Senate African Americans x Social Welfare Hearings
+
+data1 <- data.frame(col1 = subset_diversitydata$Congress, col2 = subset_diversitydata$PercAfricanAmericansinSenate, col3 = senatehearingsdata$X13)
+print(data1)
+
+correlation <- cor.test(subset_diversitydata$PercAfricanAmericansinSenate, senatehearingsdata$X13)
+print(correlation)
+
+plot26 <- ggplot(data = data1, aes(x = col2, y = col3)) +
+  geom_point(color = "red") +
+  ggtitle("Hearings vs African Americans\nin the Senate (%)") +
+  xlab("African Americans in the Senate (%)") +
+  ylab("Hearings Heard in the Senate (%)") +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  geom_text(x = 0.85 * max(subset_diversitydata$PercAfricanAmericansinSenate), y = 0.85 * max(senatehearingsdata$X13), label = paste("cor=", round(correlation$estimate, 3), "p=", round(correlation$p.value, 5)), size = 3)
+
+print(plot26)
+```
+
+
+```{r, include=FALSE}
+#House Asian Americans x Social Welfare Hearings
+
+data1 <- data.frame(col1 = subset_diversitydata$Congress, col2 = subset_diversitydata$PercAsianAmericansinHouse, col3 = househearingsdata$X13)
+print(data1)
+
+correlation <- cor.test(subset_diversitydata$PercAsianAmericansinHouse, househearingsdata$X13)
+print(correlation)
+
+plot27 <- ggplot(data = data1, aes(x = col2, y = col3)) +
+  geom_point(color = "blue") +
+  ggtitle("Hearings vs Asian Americans\nin the House (%)") +
+  xlab("Asian Americans in the House (%)") +
+  ylab("Hearings Heard in the House (%)") +
+  geom_smooth(method = "lm", se = FALSE, color = "blue") +
+  geom_text(x = 0.85 * max(subset_diversitydata$PercAsianAmericansinHouse), y = 0.85 * max(househearingsdata$X13), label = paste("cor=", round(correlation$estimate, 3), "p=", round(correlation$p.value, 5)), size = 3)
+
+print(plot27)
+```
+
+
+
+```{r, echo=FALSE, eval=TRUE}
+#Senate Asian Americans x Social Welfare Hearings
+
+data1 <- data.frame(col1 = subset_diversitydata$Congress, col2 = subset_diversitydata$PercAsianAmericansinSenate, col3 = senatehearingsdata$X13)
+print(data1)
+
+correlation <- cor.test(subset_diversitydata$PercAsianAmericansinSenate, senatehearingsdata$X13)
+print(correlation)
+
+plot28 <- ggplot(data = data1, aes(x = col2, y = col3)) +
+  geom_point(color = "blue") +
+  ggtitle("Hearings vs Asian Americans\nin the Senate (%)") +
+  xlab("Asian Americans in the Senate (%)") +
+  ylab("Hearings Heard in the Senate (%)") +
+  geom_smooth(method = "lm", se = FALSE, color = "blue") +
+  geom_text(x = 0.85 * max(subset_diversitydata$PercAsianAmericansinSenate), y = 0.85 * max(senatehearingsdata$X13), label = paste("cor=", round(correlation$estimate, 3), "p=", round(correlation$p.value, 5)), size = 3)
+
+print(plot28)
+```
+
+
+Finally, the relationship between the percentage of Asian Americans in the Senate and the percentage of social welfare hearings heard in the Senate is statistically significant as the p-value is small (< 0.05). The relationship is positive and moderate (r = 0.496); it provides the strongest evidence against the null hypothesis out of all of the correlations run. Therefore, there is evidence at the five percent significance level in support of **H1b**.
+
+
+```{r, include=FALSE}
+#House Hispanic Americans x Social Welfare Hearings
+
+data1 <- data.frame(col1 = subset_diversitydata$Congress, col2 = subset_diversitydata$PercHispanicAmericansinHouse, col3 = househearingsdata$X13)
+print(data1)
+
+correlation <- cor.test(subset_diversitydata$PercHispanicAmericansinHouse, househearingsdata$X13)
+print(correlation)
+
+plot29 <- ggplot(data = data1, aes(x = col2, y = col3)) +
+  geom_point(color = "orange") +
+  ggtitle("Hearings vs Hispanic Americans\nin the House (%)") +
+  xlab("Hispanic Americans in the House (%)") +
+  ylab("Hearings Heard in the House (%)") +
+  geom_smooth(method = "lm", se = FALSE, color = "orange") +
+  geom_text(x = 0.85 * max(subset_diversitydata$PercHispanicAmericansinHouse), y = 0.85 * max(househearingsdata$X13), label = paste("cor=", round(correlation$estimate, 3), "p=", round(correlation$p.value, 5)), size = 3)
+
+print(plot29)
+```
+
+```{r, include=FALSE}
+#Senate Hispanic Americans x Social Welfare Hearings
+
+data1 <- data.frame(col1 = subset_diversitydata$Congress, col2 = subset_diversitydata$PercHispanicAmericansinSenate, col3 = senatehearingsdata$X13)
+print(data1)
+
+correlation <- cor.test(subset_diversitydata$PercHispanicAmericansinSenate, senatehearingsdata$X13)
+print(correlation)
+
+plot30 <- ggplot(data = data1, aes(x = col2, y = col3)) +
+  geom_point(color = "orange") +
+  ggtitle("Hearings vs Hispanic Americans\nin the Senate (%)") +
+  xlab("Hispanic Americans in the Senate (%)") +
+  ylab("Hearings Heard in the Senate (%)") +
+  geom_smooth(method = "lm", se = FALSE, color = "orange") +
+  geom_text(x = 0.85 * max(subset_diversitydata$PercHispanicAmericansinSenate), y = 0.85 * max(senatehearingsdata$X13), label = paste("cor=", round(correlation$estimate, 3), "p=", round(correlation$p.value, 5)), size = 3)
+
+print(plot30)
+```
+
+```{r, include=FALSE}
+#House Women x Social Welfare Hearings
+
+data1 <- data.frame(col1 = subset_diversitydata$Congress, col2 = subset_diversitydata$PercWomeninHouse, col3 = househearingsdata$X13)
+print(data1)
+
+correlation <- cor.test(subset_diversitydata$PercWomeninHouse, househearingsdata$X13)
+print(correlation)
+
+plot31 <- ggplot(data = data1, aes(x = col2, y = col3)) +
+  geom_point(color = "purple") +
+  ggtitle("Hearings vs Women\nin the House (%)") +
+  xlab("Women in the House (%)") +
+  ylab("Hearings Heard in the House (%)") +
+  geom_smooth(method = "lm", se = FALSE, color = "purple") +
+  geom_text(x = 0.85 * max(subset_diversitydata$PercWomeninHouse), y = 0.85 * max(househearingsdata$X13), label = paste("cor=", round(correlation$estimate, 3), "p=", round(correlation$p.value, 5)), size = 3)
+
+print(plot31)
+```
+
+```{r, include=FALSE}
+#Senate Women x Social Welfare Hearings
+
+data1 <- data.frame(col1 = subset_diversitydata$Congress, col2 = subset_diversitydata$PercWomeninSenate, col3 = senatehearingsdata$X13)
+print(data1)
+
+correlation <- cor.test(subset_diversitydata$PercWomeninSenate, senatehearingsdata$X13)
+print(correlation)
+
+plot32 <- ggplot(data = data1, aes(x = col2, y = col3)) +
+  geom_point(color = "purple") +
+  ggtitle("Hearings vs Women\nin the Senate (%)") +
+  xlab("Women in the Senate (%)") +
+  ylab("Hearings Heard in the Senate (%)") +
+  geom_smooth(method = "lm", se = FALSE, color = "purple") +
+  geom_text(x = 0.85 * max(subset_diversitydata$PercWomeninSenate), y = 0.85 * max(senatehearingsdata$X13), label = paste("cor=", round(correlation$estimate, 3), "p=", round(correlation$p.value, 5)), size = 3)
+
+print(plot32)
+```
+
+```{r, warning=FALSE, include=FALSE}
+#Total House African Americans, Asian Americans, and Hispanic Americans x Social Welfare Hearings
+
+data1 <- data.frame(col1 = subset_diversitydata$Congress, col2 = subset_diversitydata$`TotalPercAA,AA,HAinHouse`, col3 = househearingsdata$X13)
+print(data1)
+
+correlation <- cor.test(subset_diversitydata$`TotalPercAA,AA,HAinHouse`, househearingsdata$X13)
+print(correlation)
+
+plot33 <- ggplot(data = data1, aes(x = col2, y = col3)) +
+  geom_point(color = "darkgreen") +
+  ggtitle("Hearings vs Total African Americans, Asian Americans,\nand Hispanic Americans in the House (%)") +
+  xlab("Total African Americans, Asian Americans,\nand Hispanic Americans in the House (%)") +
+  scale_x_continuous(limits = c(0, 28), breaks = seq(0, 28, by = 4)) +
+  ylab("Hearings Heard in the House (%)") +
+  scale_y_continuous(limits = c(0, 0.08), breaks = seq(0, .08, by = 0.01)) +
+  geom_smooth(method = "lm", se = FALSE, color = "darkgreen") +
+  geom_text(x = 0.85 * max(subset_diversitydata$`TotalPercAA,AA,HAinHouse`), y = 0.85 * max(househearingsdata$X13), label = paste("cor=", round(correlation$estimate, 3), "p=", round(correlation$p.value, 5)), size = 3)
+
+print(plot33)
+```
+
+```{r, warning=FALSE, include=FALSE}
+#Total Senate African Americans, Asian Americans, and Hispanic Americans x Social Welfare Hearings
+
+data1 <- data.frame(col1 = subset_diversitydata$Congress, col2 = subset_diversitydata$`TotalPer AA,AA,HAinSenate`, col3 = senatehearingsdata$X13)
+print(data1)
+
+correlation <- cor.test(subset_diversitydata$`TotalPer AA,AA,HAinSenate`, senatehearingsdata$X13)
+print(correlation)
+
+plot34 <- ggplot(data = data1, aes(x = col2, y = col3)) +
+  geom_point(color = "darkgreen") +
+  ggtitle("Hearings vs Total African Americans, Asian Americans,\nand Hispanic Americans in the Senate (%)") +
+  xlab("Total African Americans, Asian Americans,\nand Hispanic Americans in the Senate (%)") + scale_x_continuous(limits = c(0, 28), breaks = seq(0, 28, by = 4)) +
+  ylab("Hearings Heard in the Senate (%)") +
+   scale_y_continuous(limits = c(0, 0.08), breaks = seq(0, .08, by = 0.01)) +
+  geom_smooth(method = "lm", se = FALSE, color = "darkgreen") +
+  geom_text(x = 0.85 * max(subset_diversitydata$`TotalPer AA,AA,HAinSenate`), y = 0.85 * max(senatehearingsdata$X13), label = paste("cor=", round(correlation$estimate, 3), "p=", round(correlation$p.value, 5)), size = 3)
+
+print(plot34)
+```
+
+
+After running all of the correlations, I used the `grid.arrange` function to create a collection of panel displays grouping the various correlations together.
+
+
+```{r}
+#Panel for Civil Rights Hearings Correlation Tables
+
+grid.arrange(
+  plot15 + theme(plot.title = element_text(size = 8), axis.title.x = element_text(size = 7), axis.title.y = element_text(size = 7), axis.text = element_text(size = 3)), plot17 + theme(plot.title = element_text(size = 8), axis.title.x = element_text(size = 7), axis.title.y = element_text(size = 7), axis.text = element_text(size = 3)), plot19 + theme(plot.title = element_text(size = 8), axis.title.x = element_text(size = 7), axis.title.y = element_text(size = 7), axis.text = element_text(size = 3)), plot21 + theme(plot.title = element_text(size = 8), axis.title.x = element_text(size = 7), axis.title.y = element_text(size = 7), axis.text = element_text(size = 3)), plot16 + theme(plot.title = element_text(size = 8), axis.title.x = element_text(size = 7), axis.title.y = element_text(size = 7), axis.text = element_text(size = 3)), plot18 + theme(plot.title = element_text(size = 8), axis.title.x = element_text(size = 7), axis.title.y = element_text(size = 7), axis.text = element_text(size = 3)), plot20 + theme(plot.title = element_text(size = 8), axis.title.x = element_text(size = 7), axis.title.y = element_text(size = 7), axis.text = element_text(size = 3)), plot22 + theme(plot.title = element_text(size = 8), axis.title.x = element_text(size = 7), axis.title.y = element_text(size = 7), axis.text = element_text(size = 3)), nrow = 2,
+             top = textGrob("Percentage of Civil Rights Hearings Heard vs the Percentage of Congresspeople\n from Historically Underrepresented Groups in the House and Senate (Per 80th - 116th Congresses)", gp = gpar(fontsize = 10, fontface = "bold"), 
+                            hjust = 0.5, vjust = 1, x = unit(0.5, "npc"), y = unit(0.98, "npc"))
+)
+
+```
+
+
+```{r, warning=FALSE, echo=FALSE, eval=TRUE}
+#Panel for Civil Rights Hearings (Total %s) Correlation Tables
+
+grid.arrange(plot23 + theme(plot.title = element_text(size = 10), axis.title.x = element_text(size = 7), axis.title.y = element_text(size = 7), axis.text = element_text(size = 5)), plot24 + theme(plot.title = element_text(size = 10), axis.title.x = element_text(size = 7), axis.title.y = element_text(size = 7), axis.text = element_text(size = 5)), nrow = 1,  
+             top = textGrob("Percentage of Civil Rights Hearings Heard vs the Total Percentage of African American,\nAsian American, and Hispanic American Congresspeople in the House and Senate\n(Per 80th - 116th Congresses)", gp = gpar(fontsize = 10, fontface = "bold"), hjust = 0.5, vjust = 1, x = unit(0.5, "npc"), y = unit(0.98, "npc"))
+)
+
+```
+
+
+Two relationships of note are between the total percentage of African Americans, Asian Americans, and Hispanic Americans in the House and Senate and the total percentage of civil rights hearings heard in the House and Senate.
+
+The relationships are not statistically significant at the 95% confidence level, but they are significant at the 90% level, with p-values < 0.1. Both relationships are fairly weak, with correlation coefficients r = -0.316 and r = -0.296, respectively. Again, both relationships surprisingly covary in the negative direction, in contrast to the prediction given by **H1**.
+
+I used the same `grid.arrange` function to display the correlation plots for social welfare hearings in the House and Senate.
+
+
+```{r, results='show'}
+#Panel for Social Welfare Hearings Correlation Tables
+
+grid.arrange(
+  plot25 + theme(plot.title = element_text(size = 10), axis.title.x = element_text(size = 7), axis.title.y = element_text(size = 7), axis.text = element_text(size = 5)), plot27 + theme(plot.title = element_text(size = 10), axis.title.x = element_text(size = 7), axis.title.y = element_text(size = 7), axis.text = element_text(size = 5)), plot29 + theme(plot.title = element_text(size = 10), axis.title.x = element_text(size = 7), axis.title.y = element_text(size = 7), axis.text = element_text(size = 5)), plot31 + theme(plot.title = element_text(size = 10), axis.title.x = element_text(size = 7), axis.title.y = element_text(size = 7), axis.text = element_text(size = 5)), plot26 + theme(plot.title = element_text(size = 10), axis.title.x = element_text(size = 7), axis.title.y = element_text(size = 7), axis.text = element_text(size = 5)), plot28 + theme(plot.title = element_text(size = 10), axis.title.x = element_text(size = 7), axis.title.y = element_text(size = 7), axis.text = element_text(size = 5)), plot30 + theme(plot.title = element_text(size = 10), axis.title.x = element_text(size = 7), axis.title.y = element_text(size = 7), axis.text = element_text(size = 5)), plot32 + theme(plot.title = element_text(size = 10), axis.title.x = element_text(size = 7), axis.title.y = element_text(size = 7), axis.text = element_text(size = 5)), nrow = 2,
+             top = textGrob("Percentage of Social Welfare Hearings Heard vs the Percentage of Congresspeople\n from Historically Underrepresented Groups in the House and Senate (Per 80th - 116th Congresses)", gp = gpar(fontsize = 10, fontface = "bold"), 
+                            hjust = 0.5, vjust = 1, x = unit(0.5, "npc"), y = unit(0.98, "npc"))
+)
+
+```
+
+```{r, echo=FALSE, warning=FALSE, results='show'}
+#Panel for Social Welfare Hearings (Total %s) Correlation Tables
+
+grid.arrange(plot33 + theme(plot.title = element_text(size = 10), axis.title.x = element_text(size = 7), axis.title.y = element_text(size = 7), axis.text = element_text(size = 5)), plot34 + theme(plot.title = element_text(size = 10), axis.title.x = element_text(size = 7), axis.title.y = element_text(size = 7), axis.text = element_text(size = 5)), nrow = 1,  
+             top = textGrob("Percentage of Social Welfare Hearings Heard vs the Total Percentage of African American,\nAsian American, and Hispanic American Congresspeople in the House and Senate\n(Per 80th - 116th Congresses)", gp = gpar(fontsize = 10, fontface = "bold"), hjust = 0.5, vjust = 1, x = unit(0.5, "npc"), y = unit(0.98, "npc"))
+)
+
+```
+
+
+The results of all of the correlations were summarized using the `data.frame` function.
+
+
+```{r, warning=FALSE}
+#Results Table for Civil Rights Hearings Correlations
+
+library(knitr)
+
+p_values = c(0.0233, 0.161, 0.163, 0.0136, 0.146, 0.751, 0.207, 0.124, 0.0564, 0.0751)
+correlation_coefficients = c(-0.372, -0.235, -0.234, -0.402, -0.244, -0.0541, -0.213, -0.257, -0.316, -0.296)
+categories = c("African Americans vs CR Hearings (House)", "African Americans vs CR Hearings (Senate)", "Asian Americans vs CR Hearings (House)", "Asian Americans vs CR Hearings (Senate)", "Hispanic Americans vs CR Hearings (House)", "Hispanic Americans vs CR Hearings (Senate)", "Women vs CR Hearings (House)", "Women vs CR Hearings (Senate)", "Total African Americans, Asian Americans, and Hispanic Americans vs CR Hearings (House)", "Total African Americans, Asian Americans, and Hispanic Americans vs CR Hearings (Senate)")
+p_values_table = data.frame(Category = categories, P_Value = p_values, Correlation_Coefficient = correlation_coefficients)
+
+kable(p_values_table, caption = "Correlation Results of Civil Rights (CR) Hearings vs the Percentage of Congresspeople from Historically Underrepresented Groups in the House and Senate (Per Congress)")
+
+p_values_table
+
+```
+
+```{r, warning=FALSE}
+#Results Table for Social Welfare Hearings Correlations
+
+library(knitr)
+
+p_values2 = c(0.414, 0.420, 0.976, 0.002, 0.868, 0.0609, 0.508, 0.185, 0.705, 0.546)
+correlation_coefficients2 = c(0.138, 0.137, 0.00534, 0.496, -0.0283, -0.311, -0.112, -0.223, 0.0645, 0.103)
+categories2 = c("African Americans vs SW Hearings (House)", "African Americans vs SW Hearings (Senate)", "Asian Americans vs SW Hearings (House)", "Asian Americans vs SW Hearings (Senate)", "Hispanic Americans vs SW Hearings (House)", "Hispanic Americans vs SW Hearings (Senate)", "Women vs SW Hearings (House)", "Women vs SW Hearings (Senate)", "Total African Americans, Asian Americans, and Hispanic Americans vs SW Hearings (House)", "Total African Americans, Asian Americans, and Hispanic Americans vs SW Hearings (Senate)")
+p_values_table2 = data.frame(Category = categories2, P_Value = p_values2, Correlation_Coefficient = correlation_coefficients2)
+
+kable(p_values_table, caption = "Correlation Results of Social Welfare (SW) Hearings vs the Percentage of Congresspeople from Historically Underrepresented Groups in the House and Senate (Per Congress)")
+
+p_values_table2
+
+```
+
+
+---
+
+
+**V. Discussion and Conclusion**
+
+This report was designed to understand the relationship between congressional diversity and social movements’ access to government, as a measure of the proportion of hearings that two social movement topics (civil rights and social welfare) receive in both chambers of Congress. I hypothesized that increasing percentages of African Americans, Asian Americans, and Hispanic Americans in Congress will positively correlate with increasing quantities of congressional hearings about social movements. 
+
+After running a series of correlation tests, I discovered varying evidence for this and its subsequent hypotheses. The most notable relationships were between the percentage of African Americans in the House and civil rights hearings, the percentage of Asian Americans in the Senate and civil rights hearings, and the percentage of Asian Americans in the Senate and social welfare hearings. The relationship between the total percentage of African Americans, Asian Americans, and Hispanic Americans in the House and Senate and the total percentage of civil rights hearings heard in the House and Senate, respectively, were notable at the 90% confidence level. Interestingly, all of the correlations were negative except for the relationship between the percentage of Asian Americans in the Senate and social welfare hearings, which was surprising. 
+
+The limitations of the study include the inability to test for spuriousness by controlling for variables such as partisan control of Congress and whether the hearings are in favor of or against the topics of civil rights and social welfare. It is also difficult to know which way the causal arrow runs; perhaps diversifying representation in Congress is a result of social movements like civil rights, and not the other way around, which could explain some of the negative correlations seen in the experiment.
+
+Further studies that can control for some of these variables might provide a fuller picture of the interplay between congressional diversity and social movement access to government.
+
+
+---
+
+
+**VI. Works Cited**
+
+1. Hooghe, M. (2005). Ethnic Organisations and Social Movement Theory: The Political Opportunity Structure for Ethnic Mobilisation in Falnders. *Journal of Ethnic and Migration Studies*, 31(5), 975-990. https://doi.org/10.1080/13691830500177925.
+
+
+2. Jeydel, A. S. (2000). Social movements, political elites and political opportunity structures: the case of the woman suffrage movement from 1890-1920. *Congress & the Presidency: A Journal of Capital Studies*, 27(1), 15-40. https://doi.org/10.1080/07343460009507774.
+
+3. Kitschelt, H. P. (1986). Political Opportunity Structures and Political Protest: Anti-Nuclear Movements in Four Democracies. *British Journal of Political Science*, 16(1), 57-85. https://www.jstor.org/stable/193981.
+
+4. The Policy Agendas Project at the University of Texas at Austin (2019). *Congressional Hearings* (Data set). Comparative Agendas. https://www.comparativeagendas.net/us/research#:~:text=This%20dataset%20contains,1946%20to%202020.  
+
+5. Vital Statistics on Congress (2022). *Demographics of members of Congress* (Data set). Brookings Institute. https://www.brookings.edu/multi-chapter-report/vital-statistics-on-congress/#:~:text=Demographics%20of%20members,Chapter%201%20(Excel). 
