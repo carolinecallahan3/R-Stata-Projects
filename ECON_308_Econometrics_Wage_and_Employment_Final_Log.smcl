@@ -1,0 +1,730 @@
+{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}H:\ECON_308_RP_Final_Log.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res} 6 Dec 2024, 21:13:27
+
+{com}. import excel "H:\ECON_308_RP_FINALcps_00007.xlsx", firstrow clear
+{res}{text}(16 vars, 1,048,575 obs)
+
+{com}. 
+. save "data_2014_2018.dta", replace
+{txt}{p 0 4 2}
+file {bf}
+data_2014_2018.dta{rm}
+saved
+{p_end}
+
+{com}. 
+. describe
+
+{txt}Contains data from {res}data_2014_2018.dta
+{txt} Observations:{res}     1,048,575                  
+{txt}    Variables:{res}            16                  6 Dec 2024 21:15
+{txt}{hline}
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+{hline}
+{p 0 48}{res}{bind:YEAR           }{txt}{bind: int     }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}YEAR{p_end}
+{p 0 48}{bind:SERIAL         }{txt}{bind: long    }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}SERIAL{p_end}
+{p 0 48}{bind:MONTH          }{txt}{bind: byte    }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}MONTH{p_end}
+{p 0 48}{bind:CPSID          }{txt}{bind: double  }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}CPSID{p_end}
+{p 0 48}{bind:ASECFLAG       }{txt}{bind: byte    }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}ASECFLAG{p_end}
+{p 0 48}{bind:HFLAG          }{txt}{bind: byte    }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}HFLAG{p_end}
+{p 0 48}{bind:ASECWTH        }{txt}{bind: double  }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}ASECWTH{p_end}
+{p 0 48}{bind:STATEFIP       }{txt}{bind: byte    }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}STATEFIP{p_end}
+{p 0 48}{bind:PERNUM         }{txt}{bind: byte    }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}PERNUM{p_end}
+{p 0 48}{bind:CPSIDP         }{txt}{bind: double  }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}CPSIDP{p_end}
+{p 0 48}{bind:CPSIDV         }{txt}{bind: double  }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}CPSIDV{p_end}
+{p 0 48}{bind:ASECWT         }{txt}{bind: double  }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}ASECWT{p_end}
+{p 0 48}{bind:POPSTAT        }{txt}{bind: byte    }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}POPSTAT{p_end}
+{p 0 48}{bind:EMPSTAT        }{txt}{bind: byte    }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}EMPSTAT{p_end}
+{p 0 48}{bind:UHRSWORKT      }{txt}{bind: int     }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}UHRSWORKT{p_end}
+{p 0 48}{bind:INCWAGE        }{txt}{bind: long    }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}INCWAGE{p_end}
+{txt}{hline}
+Sorted by: 
+
+{com}. import excel "H:\ECON_308_RP_FINAL_08.13_cps_00009.xlsx", firstrow clear
+{res}{text}(15 vars, 1,048,575 obs)
+
+{com}. 
+. save "data_2008_2013.dta", replace
+{txt}{p 0 4 2}
+file {bf}
+data_2008_2013.dta{rm}
+saved
+{p_end}
+
+{com}. 
+. describe
+
+{txt}Contains data from {res}data_2008_2013.dta
+{txt} Observations:{res}     1,048,575                  
+{txt}    Variables:{res}            15                  6 Dec 2024 21:18
+{txt}{hline}
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+{hline}
+{p 0 48}{res}{bind:YEAR           }{txt}{bind: int     }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}YEAR{p_end}
+{p 0 48}{bind:SERIAL         }{txt}{bind: long    }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}SERIAL{p_end}
+{p 0 48}{bind:MONTH          }{txt}{bind: byte    }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}MONTH{p_end}
+{p 0 48}{bind:CPSID          }{txt}{bind: double  }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}CPSID{p_end}
+{p 0 48}{bind:ASECFLAG       }{txt}{bind: byte    }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}ASECFLAG{p_end}
+{p 0 48}{bind:ASECWTH        }{txt}{bind: double  }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}ASECWTH{p_end}
+{p 0 48}{bind:STATEFIP       }{txt}{bind: byte    }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}STATEFIP{p_end}
+{p 0 48}{bind:PERNUM         }{txt}{bind: byte    }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}PERNUM{p_end}
+{p 0 48}{bind:CPSIDP         }{txt}{bind: double  }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}CPSIDP{p_end}
+{p 0 48}{bind:CPSIDV         }{txt}{bind: double  }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}CPSIDV{p_end}
+{p 0 48}{bind:ASECWT         }{txt}{bind: double  }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}ASECWT{p_end}
+{p 0 48}{bind:POPSTAT        }{txt}{bind: byte    }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}POPSTAT{p_end}
+{p 0 48}{bind:EMPSTAT        }{txt}{bind: byte    }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}EMPSTAT{p_end}
+{p 0 48}{bind:UHRSWORKT      }{txt}{bind: int     }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}UHRSWORKT{p_end}
+{p 0 48}{bind:INCWAGE        }{txt}{bind: long    }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}INCWAGE{p_end}
+{txt}{hline}
+Sorted by: 
+
+{com}. import excel "H:\ECON_308_RP_FINAL_13_ONLY_v2_cps_00010.xlsx", firstrow clear
+{res}{text}(15 vars, 202,634 obs)
+
+{com}. 
+. save "data_2013.dta", replace
+{txt}{p 0 4 2}
+file {bf}
+data_2013.dta{rm}
+saved
+{p_end}
+
+{com}. 
+. describe
+
+{txt}Contains data from {res}data_2013.dta
+{txt} Observations:{res}       202,634                  
+{txt}    Variables:{res}            15                  6 Dec 2024 21:18
+{txt}{hline}
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+{hline}
+{p 0 48}{res}{bind:YEAR           }{txt}{bind: int     }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}YEAR{p_end}
+{p 0 48}{bind:SERIAL         }{txt}{bind: long    }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}SERIAL{p_end}
+{p 0 48}{bind:MONTH          }{txt}{bind: byte    }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}MONTH{p_end}
+{p 0 48}{bind:CPSID          }{txt}{bind: double  }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}CPSID{p_end}
+{p 0 48}{bind:ASECFLAG       }{txt}{bind: byte    }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}ASECFLAG{p_end}
+{p 0 48}{bind:ASECWTH        }{txt}{bind: double  }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}ASECWTH{p_end}
+{p 0 48}{bind:STATEFIP       }{txt}{bind: byte    }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}STATEFIP{p_end}
+{p 0 48}{bind:PERNUM         }{txt}{bind: byte    }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}PERNUM{p_end}
+{p 0 48}{bind:CPSIDP         }{txt}{bind: double  }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}CPSIDP{p_end}
+{p 0 48}{bind:CPSIDV         }{txt}{bind: double  }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}CPSIDV{p_end}
+{p 0 48}{bind:ASECWT         }{txt}{bind: double  }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}ASECWT{p_end}
+{p 0 48}{bind:POPSTAT        }{txt}{bind: byte    }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}POPSTAT{p_end}
+{p 0 48}{bind:EMPSTAT        }{txt}{bind: byte    }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}EMPSTAT{p_end}
+{p 0 48}{bind:UHRSWORKT      }{txt}{bind: int     }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}UHRSWORKT{p_end}
+{p 0 48}{bind:INCWAGE        }{txt}{bind: long    }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}INCWAGE{p_end}
+{txt}{hline}
+Sorted by: 
+
+{com}. preserve
+
+. 
+. use "data_2014_2018.dta", clear
+
+. 
+. keep if STATEFIP == 5 | STATEFIP == 28
+{txt}(1,017,884 observations deleted)
+
+{com}. 
+. save "data_2014_2018_subset.dta", replace
+{txt}{p 0 4 2}
+file {bf}
+data_2014_2018_subset.dta{rm}
+saved
+{p_end}
+
+{com}. 
+. 
+. 
+. preserve
+{err}already preserved
+{txt}{search r(621), local:r(621);}
+
+{com}. 
+. use "data_2008_2013.dta", clear
+
+. 
+. keep if STATEFIP == 5 | STATEFIP == 28
+{txt}(1,028,678 observations deleted)
+
+{com}. 
+. save "data_2008_2013_subset.dta", replace
+{txt}{p 0 4 2}
+file {bf}
+data_2008_2013_subset.dta{rm}
+saved
+{p_end}
+
+{com}. 
+. 
+. 
+. preserve
+{err}already preserved
+{txt}{search r(621), local:r(621);}
+
+{com}. 
+. use "data_2013.dta", clear
+
+. 
+. keep if STATEFIP == 5 | STATEFIP == 28
+{txt}(198,499 observations deleted)
+
+{com}. 
+. save "data_2013_subset.dta", replace
+{txt}{p 0 4 2}
+file {bf}
+data_2013_subset.dta{rm}
+saved
+{p_end}
+
+{com}. use "data_2014_2018_subset.dta", clear
+
+. 
+. drop HFLAG
+
+. preserve
+{err}already preserved
+{txt}{search r(621), local:r(621);}
+
+{com}. 
+. append using "data_2008_2013_subset.dta" "data_2013_subset.dta"
+
+. 
+. describe
+
+{txt}Contains data from {res}data_2014_2018_subset.dta
+{txt} Observations:{res}        54,723                  
+{txt}    Variables:{res}            15                  6 Dec 2024 21:19
+{txt}{hline}
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+{hline}
+{p 0 48}{res}{bind:YEAR           }{txt}{bind: int     }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}YEAR{p_end}
+{p 0 48}{bind:SERIAL         }{txt}{bind: long    }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}SERIAL{p_end}
+{p 0 48}{bind:MONTH          }{txt}{bind: byte    }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}MONTH{p_end}
+{p 0 48}{bind:CPSID          }{txt}{bind: double  }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}CPSID{p_end}
+{p 0 48}{bind:ASECFLAG       }{txt}{bind: byte    }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}ASECFLAG{p_end}
+{p 0 48}{bind:ASECWTH        }{txt}{bind: double  }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}ASECWTH{p_end}
+{p 0 48}{bind:STATEFIP       }{txt}{bind: byte    }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}STATEFIP{p_end}
+{p 0 48}{bind:PERNUM         }{txt}{bind: byte    }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}PERNUM{p_end}
+{p 0 48}{bind:CPSIDP         }{txt}{bind: double  }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}CPSIDP{p_end}
+{p 0 48}{bind:CPSIDV         }{txt}{bind: double  }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}CPSIDV{p_end}
+{p 0 48}{bind:ASECWT         }{txt}{bind: double  }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}ASECWT{p_end}
+{p 0 48}{bind:POPSTAT        }{txt}{bind: byte    }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}POPSTAT{p_end}
+{p 0 48}{bind:EMPSTAT        }{txt}{bind: byte    }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}EMPSTAT{p_end}
+{p 0 48}{bind:UHRSWORKT      }{txt}{bind: int     }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}UHRSWORKT{p_end}
+{p 0 48}{bind:INCWAGE        }{txt}{bind: long    }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}INCWAGE{p_end}
+{txt}{hline}
+Sorted by: 
+     Note: {res}Dataset has changed since last saved.
+
+{com}. 
+. list in 1/10
+
+     {txt}{c TLC}{hline 6}{c TT}{hline 9}{c TT}{hline 8}{c TT}{hline 12}{c TT}{hline 11}{c TT}{hline 10}{c TT}{hline 11}{c TRC}
+  1. {c |} YEAR {c |} SERIAL  {c |} MONTH  {c |}     CPSID  {c |} ASECFLAG  {c |} ASECWTH  {c |} STATEFIP  {c |}
+     {c |} {res}2014 {txt}{c |} {res} 43607  {txt}{c |} {res}    3  {txt}{c |} {res}2.014e+13  {txt}{c |} {res}       1  {txt}{c |} {res}3436.34  {txt}{c |} {res}      28  {txt}{c |}
+     {c LT}{hline 6}{c BT}{hline 1}{c TT}{hline 7}{c BT}{hline 3}{c TT}{hline 4}{c BT}{hline 6}{c TT}{hline 5}{c BT}{hline 3}{c TT}{hline 7}{c BT}{hline 1}{c TT}{hline 8}{c BT}{c TT}{hline 10}{c RT}
+     {c |} PERNUM {c |}    CPSIDP {c |}    CPSIDV {c |}  ASECWT {c |} POPSTAT {c |} EMPSTAT {c |} UHRSWO~T {c |}
+     {c |} {res}     1 {txt}{c |} {res}2.014e+13 {txt}{c |} {res}2.014e+14 {txt}{c |} {res}3436.34 {txt}{c |} {res}      1 {txt}{c |} {res}     36 {txt}{c |} {res}     999 {txt}{c |}
+     {c LT}{hline 8}{c BT}{hline 11}{c BT}{hline 11}{c BT}{hline 9}{c BT}{hline 9}{c BT}{hline 9}{c BT}{hline 10}{c RT}
+     {c |}                                 INCWAGE                                 {c |}
+     {c |}                                 {res}      0                                 {txt}{c |}
+     {c BLC}{hline 73}{c BRC}
+
+     {c TLC}{hline 6}{c TT}{hline 9}{c TT}{hline 8}{c TT}{hline 12}{c TT}{hline 11}{c TT}{hline 10}{c TT}{hline 11}{c TRC}
+  2. {c |} YEAR {c |} SERIAL  {c |} MONTH  {c |}     CPSID  {c |} ASECFLAG  {c |} ASECWTH  {c |} STATEFIP  {c |}
+     {c |} {res}2014 {txt}{c |} {res} 43607  {txt}{c |} {res}    3  {txt}{c |} {res}2.014e+13  {txt}{c |} {res}       1  {txt}{c |} {res}3436.34  {txt}{c |} {res}      28  {txt}{c |}
+     {c LT}{hline 6}{c BT}{hline 1}{c TT}{hline 7}{c BT}{hline 3}{c TT}{hline 4}{c BT}{hline 6}{c TT}{hline 5}{c BT}{hline 3}{c TT}{hline 7}{c BT}{hline 1}{c TT}{hline 8}{c BT}{c TT}{hline 10}{c RT}
+     {c |} PERNUM {c |}    CPSIDP {c |}    CPSIDV {c |}  ASECWT {c |} POPSTAT {c |} EMPSTAT {c |} UHRSWO~T {c |}
+     {c |} {res}     2 {txt}{c |} {res}2.014e+13 {txt}{c |} {res}2.014e+14 {txt}{c |} {res}3436.34 {txt}{c |} {res}      1 {txt}{c |} {res}     36 {txt}{c |} {res}     999 {txt}{c |}
+     {c LT}{hline 8}{c BT}{hline 11}{c BT}{hline 11}{c BT}{hline 9}{c BT}{hline 9}{c BT}{hline 9}{c BT}{hline 10}{c RT}
+     {c |}                                 INCWAGE                                 {c |}
+     {c |}                                 {res}      0                                 {txt}{c |}
+     {c BLC}{hline 73}{c BRC}
+
+     {c TLC}{hline 6}{c TT}{hline 9}{c TT}{hline 8}{c TT}{hline 12}{c TT}{hline 11}{c TT}{hline 10}{c TT}{hline 11}{c TRC}
+  3. {c |} YEAR {c |} SERIAL  {c |} MONTH  {c |}     CPSID  {c |} ASECFLAG  {c |} ASECWTH  {c |} STATEFIP  {c |}
+     {c |} {res}2014 {txt}{c |} {res} 43609  {txt}{c |} {res}    3  {txt}{c |} {res}2.014e+13  {txt}{c |} {res}       1  {txt}{c |} {res}3293.06  {txt}{c |} {res}      28  {txt}{c |}
+     {c LT}{hline 6}{c BT}{hline 1}{c TT}{hline 7}{c BT}{hline 3}{c TT}{hline 4}{c BT}{hline 6}{c TT}{hline 5}{c BT}{hline 3}{c TT}{hline 7}{c BT}{hline 1}{c TT}{hline 8}{c BT}{c TT}{hline 10}{c RT}
+     {c |} PERNUM {c |}    CPSIDP {c |}    CPSIDV {c |}  ASECWT {c |} POPSTAT {c |} EMPSTAT {c |} UHRSWO~T {c |}
+     {c |} {res}     1 {txt}{c |} {res}2.014e+13 {txt}{c |} {res}2.014e+14 {txt}{c |} {res}3293.06 {txt}{c |} {res}      1 {txt}{c |} {res}     10 {txt}{c |} {res}     997 {txt}{c |}
+     {c LT}{hline 8}{c BT}{hline 11}{c BT}{hline 11}{c BT}{hline 9}{c BT}{hline 9}{c BT}{hline 9}{c BT}{hline 10}{c RT}
+     {c |}                                 INCWAGE                                 {c |}
+     {c |}                                 {res}      0                                 {txt}{c |}
+     {c BLC}{hline 73}{c BRC}
+
+     {c TLC}{hline 6}{c TT}{hline 9}{c TT}{hline 8}{c TT}{hline 12}{c TT}{hline 11}{c TT}{hline 10}{c TT}{hline 11}{c TRC}
+  4. {c |} YEAR {c |} SERIAL  {c |} MONTH  {c |}     CPSID  {c |} ASECFLAG  {c |} ASECWTH  {c |} STATEFIP  {c |}
+     {c |} {res}2014 {txt}{c |} {res} 43609  {txt}{c |} {res}    3  {txt}{c |} {res}2.014e+13  {txt}{c |} {res}       1  {txt}{c |} {res}3293.06  {txt}{c |} {res}      28  {txt}{c |}
+     {c LT}{hline 6}{c BT}{hline 1}{c TT}{hline 7}{c BT}{hline 3}{c TT}{hline 4}{c BT}{hline 6}{c TT}{hline 5}{c BT}{hline 3}{c TT}{hline 7}{c BT}{hline 1}{c TT}{hline 8}{c BT}{c TT}{hline 10}{c RT}
+     {c |} PERNUM {c |}    CPSIDP {c |}    CPSIDV {c |}  ASECWT {c |} POPSTAT {c |} EMPSTAT {c |} UHRSWO~T {c |}
+     {c |} {res}     2 {txt}{c |} {res}2.014e+13 {txt}{c |} {res}2.014e+14 {txt}{c |} {res}3293.06 {txt}{c |} {res}      1 {txt}{c |} {res}     10 {txt}{c |} {res}      42 {txt}{c |}
+     {c LT}{hline 8}{c BT}{hline 11}{c BT}{hline 11}{c BT}{hline 9}{c BT}{hline 9}{c BT}{hline 9}{c BT}{hline 10}{c RT}
+     {c |}                                 INCWAGE                                 {c |}
+     {c |}                                 {res}  43000                                 {txt}{c |}
+     {c BLC}{hline 73}{c BRC}
+
+     {c TLC}{hline 6}{c TT}{hline 9}{c TT}{hline 8}{c TT}{hline 12}{c TT}{hline 11}{c TT}{hline 10}{c TT}{hline 11}{c TRC}
+  5. {c |} YEAR {c |} SERIAL  {c |} MONTH  {c |}     CPSID  {c |} ASECFLAG  {c |} ASECWTH  {c |} STATEFIP  {c |}
+     {c |} {res}2014 {txt}{c |} {res} 43620  {txt}{c |} {res}    3  {txt}{c |} {res}2.013e+13  {txt}{c |} {res}       1  {txt}{c |} {res}1442.08  {txt}{c |} {res}      28  {txt}{c |}
+     {c LT}{hline 6}{c BT}{hline 1}{c TT}{hline 7}{c BT}{hline 3}{c TT}{hline 4}{c BT}{hline 6}{c TT}{hline 5}{c BT}{hline 3}{c TT}{hline 7}{c BT}{hline 1}{c TT}{hline 8}{c BT}{c TT}{hline 10}{c RT}
+     {c |} PERNUM {c |}    CPSIDP {c |}    CPSIDV {c |}  ASECWT {c |} POPSTAT {c |} EMPSTAT {c |} UHRSWO~T {c |}
+     {c |} {res}     1 {txt}{c |} {res}2.013e+13 {txt}{c |} {res}2.013e+14 {txt}{c |} {res}1442.08 {txt}{c |} {res}      1 {txt}{c |} {res}     36 {txt}{c |} {res}     999 {txt}{c |}
+     {c LT}{hline 8}{c BT}{hline 11}{c BT}{hline 11}{c BT}{hline 9}{c BT}{hline 9}{c BT}{hline 9}{c BT}{hline 10}{c RT}
+     {c |}                                 INCWAGE                                 {c |}
+     {c |}                                 {res}      0                                 {txt}{c |}
+     {c BLC}{hline 73}{c BRC}
+
+     {c TLC}{hline 6}{c TT}{hline 9}{c TT}{hline 8}{c TT}{hline 12}{c TT}{hline 11}{c TT}{hline 10}{c TT}{hline 11}{c TRC}
+  6. {c |} YEAR {c |} SERIAL  {c |} MONTH  {c |}     CPSID  {c |} ASECFLAG  {c |} ASECWTH  {c |} STATEFIP  {c |}
+     {c |} {res}2014 {txt}{c |} {res} 43621  {txt}{c |} {res}    3  {txt}{c |} {res}2.013e+13  {txt}{c |} {res}       1  {txt}{c |} {res}1546.91  {txt}{c |} {res}      28  {txt}{c |}
+     {c LT}{hline 6}{c BT}{hline 1}{c TT}{hline 7}{c BT}{hline 3}{c TT}{hline 4}{c BT}{hline 6}{c TT}{hline 5}{c BT}{hline 3}{c TT}{hline 7}{c BT}{hline 1}{c TT}{hline 8}{c BT}{c TT}{hline 10}{c RT}
+     {c |} PERNUM {c |}    CPSIDP {c |}    CPSIDV {c |}  ASECWT {c |} POPSTAT {c |} EMPSTAT {c |} UHRSWO~T {c |}
+     {c |} {res}     1 {txt}{c |} {res}2.013e+13 {txt}{c |} {res}2.013e+14 {txt}{c |} {res}1546.91 {txt}{c |} {res}      1 {txt}{c |} {res}     36 {txt}{c |} {res}     999 {txt}{c |}
+     {c LT}{hline 8}{c BT}{hline 11}{c BT}{hline 11}{c BT}{hline 9}{c BT}{hline 9}{c BT}{hline 9}{c BT}{hline 10}{c RT}
+     {c |}                                 INCWAGE                                 {c |}
+     {c |}                                 {res}      0                                 {txt}{c |}
+     {c BLC}{hline 73}{c BRC}
+
+     {c TLC}{hline 6}{c TT}{hline 9}{c TT}{hline 8}{c TT}{hline 12}{c TT}{hline 11}{c TT}{hline 10}{c TT}{hline 11}{c TRC}
+  7. {c |} YEAR {c |} SERIAL  {c |} MONTH  {c |}     CPSID  {c |} ASECFLAG  {c |} ASECWTH  {c |} STATEFIP  {c |}
+     {c |} {res}2014 {txt}{c |} {res} 43621  {txt}{c |} {res}    3  {txt}{c |} {res}2.013e+13  {txt}{c |} {res}       1  {txt}{c |} {res}1546.91  {txt}{c |} {res}      28  {txt}{c |}
+     {c LT}{hline 6}{c BT}{hline 1}{c TT}{hline 7}{c BT}{hline 3}{c TT}{hline 4}{c BT}{hline 6}{c TT}{hline 5}{c BT}{hline 3}{c TT}{hline 7}{c BT}{hline 1}{c TT}{hline 8}{c BT}{c TT}{hline 10}{c RT}
+     {c |} PERNUM {c |}    CPSIDP {c |}    CPSIDV {c |}  ASECWT {c |} POPSTAT {c |} EMPSTAT {c |} UHRSWO~T {c |}
+     {c |} {res}     2 {txt}{c |} {res}2.013e+13 {txt}{c |} {res}2.013e+14 {txt}{c |} {res} 3744.8 {txt}{c |} {res}      1 {txt}{c |} {res}     34 {txt}{c |} {res}     999 {txt}{c |}
+     {c LT}{hline 8}{c BT}{hline 11}{c BT}{hline 11}{c BT}{hline 9}{c BT}{hline 9}{c BT}{hline 9}{c BT}{hline 10}{c RT}
+     {c |}                                 INCWAGE                                 {c |}
+     {c |}                                 {res}      0                                 {txt}{c |}
+     {c BLC}{hline 73}{c BRC}
+
+     {c TLC}{hline 6}{c TT}{hline 9}{c TT}{hline 8}{c TT}{hline 12}{c TT}{hline 11}{c TT}{hline 10}{c TT}{hline 11}{c TRC}
+  8. {c |} YEAR {c |} SERIAL  {c |} MONTH  {c |}     CPSID  {c |} ASECFLAG  {c |} ASECWTH  {c |} STATEFIP  {c |}
+     {c |} {res}2014 {txt}{c |} {res} 43622  {txt}{c |} {res}    3  {txt}{c |} {res}2.014e+13  {txt}{c |} {res}       1  {txt}{c |} {res}4174.79  {txt}{c |} {res}      28  {txt}{c |}
+     {c LT}{hline 6}{c BT}{hline 1}{c TT}{hline 7}{c BT}{hline 3}{c TT}{hline 4}{c BT}{hline 6}{c TT}{hline 5}{c BT}{hline 3}{c TT}{hline 7}{c BT}{hline 1}{c TT}{hline 8}{c BT}{c TT}{hline 10}{c RT}
+     {c |} PERNUM {c |}    CPSIDP {c |}    CPSIDV {c |}  ASECWT {c |} POPSTAT {c |} EMPSTAT {c |} UHRSWO~T {c |}
+     {c |} {res}     1 {txt}{c |} {res}2.014e+13 {txt}{c |} {res}2.014e+14 {txt}{c |} {res}4174.79 {txt}{c |} {res}      1 {txt}{c |} {res}     10 {txt}{c |} {res}      40 {txt}{c |}
+     {c LT}{hline 8}{c BT}{hline 11}{c BT}{hline 11}{c BT}{hline 9}{c BT}{hline 9}{c BT}{hline 9}{c BT}{hline 10}{c RT}
+     {c |}                                 INCWAGE                                 {c |}
+     {c |}                                 {res}  45000                                 {txt}{c |}
+     {c BLC}{hline 73}{c BRC}
+
+     {c TLC}{hline 6}{c TT}{hline 9}{c TT}{hline 8}{c TT}{hline 12}{c TT}{hline 11}{c TT}{hline 10}{c TT}{hline 11}{c TRC}
+  9. {c |} YEAR {c |} SERIAL  {c |} MONTH  {c |}     CPSID  {c |} ASECFLAG  {c |} ASECWTH  {c |} STATEFIP  {c |}
+     {c |} {res}2014 {txt}{c |} {res} 43622  {txt}{c |} {res}    3  {txt}{c |} {res}2.014e+13  {txt}{c |} {res}       1  {txt}{c |} {res}4174.79  {txt}{c |} {res}      28  {txt}{c |}
+     {c LT}{hline 6}{c BT}{hline 1}{c TT}{hline 7}{c BT}{hline 3}{c TT}{hline 4}{c BT}{hline 6}{c TT}{hline 5}{c BT}{hline 3}{c TT}{hline 7}{c BT}{hline 1}{c TT}{hline 8}{c BT}{c TT}{hline 10}{c RT}
+     {c |} PERNUM {c |}    CPSIDP {c |}    CPSIDV {c |}  ASECWT {c |} POPSTAT {c |} EMPSTAT {c |} UHRSWO~T {c |}
+     {c |} {res}     2 {txt}{c |} {res}2.014e+13 {txt}{c |} {res}2.014e+14 {txt}{c |} {res}4174.79 {txt}{c |} {res}      1 {txt}{c |} {res}     10 {txt}{c |} {res}      40 {txt}{c |}
+     {c LT}{hline 8}{c BT}{hline 11}{c BT}{hline 11}{c BT}{hline 9}{c BT}{hline 9}{c BT}{hline 9}{c BT}{hline 10}{c RT}
+     {c |}                                 INCWAGE                                 {c |}
+     {c |}                                 {res}  20000                                 {txt}{c |}
+     {c BLC}{hline 73}{c BRC}
+
+     {c TLC}{hline 6}{c TT}{hline 9}{c TT}{hline 8}{c TT}{hline 12}{c TT}{hline 11}{c TT}{hline 10}{c TT}{hline 11}{c TRC}
+ 10. {c |} YEAR {c |} SERIAL  {c |} MONTH  {c |}     CPSID  {c |} ASECFLAG  {c |} ASECWTH  {c |} STATEFIP  {c |}
+     {c |} {res}2014 {txt}{c |} {res} 43623  {txt}{c |} {res}    3  {txt}{c |} {res}2.013e+13  {txt}{c |} {res}       1  {txt}{c |} {res}1794.67  {txt}{c |} {res}      28  {txt}{c |}
+     {c LT}{hline 6}{c BT}{hline 1}{c TT}{hline 7}{c BT}{hline 3}{c TT}{hline 4}{c BT}{hline 6}{c TT}{hline 5}{c BT}{hline 3}{c TT}{hline 7}{c BT}{hline 1}{c TT}{hline 8}{c BT}{c TT}{hline 10}{c RT}
+     {c |} PERNUM {c |}    CPSIDP {c |}    CPSIDV {c |}  ASECWT {c |} POPSTAT {c |} EMPSTAT {c |} UHRSWO~T {c |}
+     {c |} {res}     1 {txt}{c |} {res}2.013e+13 {txt}{c |} {res}2.013e+14 {txt}{c |} {res}1794.67 {txt}{c |} {res}      1 {txt}{c |} {res}     10 {txt}{c |} {res}      14 {txt}{c |}
+     {c LT}{hline 8}{c BT}{hline 11}{c BT}{hline 11}{c BT}{hline 9}{c BT}{hline 9}{c BT}{hline 9}{c BT}{hline 10}{c RT}
+     {c |}                                 INCWAGE                                 {c |}
+     {c |}                                 {res}   9000                                 {txt}{c |}
+     {c BLC}{hline 73}{c BRC}
+
+{com}. generate total_hours_year = UHRSWORKT * 52
+
+. 
+. generate WORKER_PRODUCT = INCWAGE / total_hours_year
+{txt}(14 missing values generated)
+
+{com}. 
+. list INCWAGE UHRSWORKT total_hours_year WORKER_PRODUCT if missing(WORKER_PRODUCT)
+{txt}
+       {c TLC}{hline 9}{c -}{hline 10}{c -}{hline 10}{c -}{hline 10}{c TRC}
+       {c |} {res}INCWAGE   UHRSWO~T   total_~r   WORKER~T {txt}{c |}
+       {c LT}{hline 9}{c -}{hline 10}{c -}{hline 10}{c -}{hline 10}{c RT}
+ 6300. {c |} {res}      0          0          0          . {txt}{c |}
+ 6727. {c |} {res}  10000          0          0          . {txt}{c |}
+16696. {c |} {res}      0          0          0          . {txt}{c |}
+19631. {c |} {res}  20000          0          0          . {txt}{c |}
+22321. {c |} {res}      0          0          0          . {txt}{c |}
+       {c LT}{hline 9}{c -}{hline 10}{c -}{hline 10}{c -}{hline 10}{c RT}
+23281. {c |} {res}      0          0          0          . {txt}{c |}
+27215. {c |} {res}  26000          0          0          . {txt}{c |}
+41119. {c |} {res}  30000          0          0          . {txt}{c |}
+42328. {c |} {res}  10000          0          0          . {txt}{c |}
+43360. {c |} {res}      0          0          0          . {txt}{c |}
+       {c LT}{hline 9}{c -}{hline 10}{c -}{hline 10}{c -}{hline 10}{c RT}
+43714. {c |} {res}      0          0          0          . {txt}{c |}
+43729. {c |} {res}  56000          0          0          . {txt}{c |}
+45799. {c |} {res}  30002          0          0          . {txt}{c |}
+51642. {c |} {res}    250          0          0          . {txt}{c |}
+       {c BLC}{hline 9}{c -}{hline 10}{c -}{hline 10}{c -}{hline 10}{c BRC}
+
+{com}. 
+. replace WORKER_PRODUCT = 0 if missing(WORKER_PRODUCT)
+{txt}(14 real changes made)
+
+{com}. generate STATE_POP = .
+{txt}(54,723 missing values generated)
+
+{com}. 
+. 
+. 
+. replace STATE_POP = 2874554 if STATEFIP == 5 & YEAR == 2008
+{txt}(2,185 real changes made)
+
+{com}. 
+. replace STATE_POP = 2896843 if STATEFIP == 5 & YEAR == 2009
+{txt}(2,144 real changes made)
+
+{com}. 
+. replace STATE_POP = 2921998 if STATEFIP == 5 & YEAR == 2010
+{txt}(2,014 real changes made)
+
+{com}. 
+. replace STATE_POP = 2941038 if STATEFIP == 5 & YEAR == 2011
+{txt}(1,958 real changes made)
+
+{com}. 
+. replace STATE_POP = 2952876 if STATEFIP == 5 & YEAR == 2012
+{txt}(1,935 real changes made)
+
+{com}. 
+. replace STATE_POP = 2960459 if STATEFIP == 5 & YEAR == 2013
+{txt}(2,270 real changes made)
+
+{com}. 
+. 
+. 
+. replace STATE_POP = 2947806 if STATEFIP == 28 & YEAR == 2008
+{txt}(1,966 real changes made)
+
+{com}. 
+. replace STATE_POP = 2958774 if STATEFIP == 28 & YEAR == 2009
+{txt}(1,871 real changes made)
+
+{com}. 
+. replace STATE_POP = 2970615 if STATEFIP == 28 & YEAR == 2010
+{txt}(2,011 real changes made)
+
+{com}. 
+. replace STATE_POP = 2979147 if STATEFIP == 28 & YEAR == 2011
+{txt}(2,005 real changes made)
+
+{com}. 
+. replace STATE_POP = 2984599 if STATEFIP == 28 & YEAR == 2012
+{txt}(1,808 real changes made)
+
+{com}. 
+. replace STATE_POP = 2989839 if STATEFIP == 28 & YEAR == 2013
+{txt}(1,865 real changes made)
+
+{com}. 
+. 
+. 
+. replace STATE_POP = 2968759 if STATEFIP == 5 & YEAR == 2014
+{txt}(2,260 real changes made)
+
+{com}. 
+. replace STATE_POP = 2979732 if STATEFIP == 5 & YEAR == 2015
+{txt}(2,945 real changes made)
+
+{com}. 
+. replace STATE_POP = 2991815 if STATEFIP == 5 & YEAR == 2016
+{txt}(3,404 real changes made)
+
+{com}. 
+. replace STATE_POP = 3003855 if STATEFIP == 5 & YEAR == 2017
+{txt}(3,345 real changes made)
+
+{com}. 
+. replace STATE_POP = 3012161 if STATEFIP == 5 & YEAR == 2018
+{txt}(3,242 real changes made)
+
+{com}. 
+. 
+. 
+. replace STATE_POP = 2991892 if STATEFIP == 28 & YEAR == 2014
+{txt}(1,927 real changes made)
+
+{com}. 
+. replace STATE_POP = 2990231 if STATEFIP == 28 & YEAR == 2015
+{txt}(3,250 real changes made)
+
+{com}. 
+. replace STATE_POP = 2990595 if STATEFIP == 28 & YEAR == 2016
+{txt}(3,586 real changes made)
+
+{com}. 
+. replace STATE_POP = 2990674 if STATEFIP == 28 & YEAR == 2017
+{txt}(3,377 real changes made)
+
+{com}. 
+. replace STATE_POP = 2892879 if STATEFIP == 28 & YEAR == 2018
+{txt}(3,355 real changes made)
+
+{com}. describe
+
+{txt}Contains data from {res}data_2014_2018_subset.dta
+{txt} Observations:{res}        54,723                  
+{txt}    Variables:{res}            18                  6 Dec 2024 21:19
+{txt}{hline}
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+{hline}
+{p 0 48}{res}{bind:YEAR           }{txt}{bind: int     }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}YEAR{p_end}
+{p 0 48}{bind:SERIAL         }{txt}{bind: long    }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}SERIAL{p_end}
+{p 0 48}{bind:MONTH          }{txt}{bind: byte    }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}MONTH{p_end}
+{p 0 48}{bind:CPSID          }{txt}{bind: double  }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}CPSID{p_end}
+{p 0 48}{bind:ASECFLAG       }{txt}{bind: byte    }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}ASECFLAG{p_end}
+{p 0 48}{bind:ASECWTH        }{txt}{bind: double  }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}ASECWTH{p_end}
+{p 0 48}{bind:STATEFIP       }{txt}{bind: byte    }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}STATEFIP{p_end}
+{p 0 48}{bind:PERNUM         }{txt}{bind: byte    }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}PERNUM{p_end}
+{p 0 48}{bind:CPSIDP         }{txt}{bind: double  }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}CPSIDP{p_end}
+{p 0 48}{bind:CPSIDV         }{txt}{bind: double  }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}CPSIDV{p_end}
+{p 0 48}{bind:ASECWT         }{txt}{bind: double  }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}ASECWT{p_end}
+{p 0 48}{bind:POPSTAT        }{txt}{bind: byte    }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}POPSTAT{p_end}
+{p 0 48}{bind:EMPSTAT        }{txt}{bind: byte    }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}EMPSTAT{p_end}
+{p 0 48}{bind:UHRSWORKT      }{txt}{bind: int     }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}UHRSWORKT{p_end}
+{p 0 48}{bind:INCWAGE        }{txt}{bind: long    }{bind:%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}INCWAGE{p_end}
+{p 0 48}{bind:total_hours_y~r}{txt}{bind: float   }{bind:%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:WORKER_PRODUCT }{txt}{bind: float   }{bind:%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:STATE_POP      }{txt}{bind: float   }{bind:%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{txt}{hline}
+Sorted by: 
+     Note: {res}Dataset has changed since last saved.
+
+{com}. 
+. list in 1/10
+
+     {txt}{c TLC}{hline 6}{c TT}{hline 9}{c TT}{hline 8}{c TT}{hline 12}{c TT}{hline 11}{c TT}{hline 10}{c TT}{hline 11}{c TRC}
+  1. {c |} YEAR {c |} SERIAL  {c |} MONTH  {c |}     CPSID  {c |} ASECFLAG  {c |} ASECWTH  {c |} STATEFIP  {c |}
+     {c |} {res}2014 {txt}{c |} {res} 43607  {txt}{c |} {res}    3  {txt}{c |} {res}2.014e+13  {txt}{c |} {res}       1  {txt}{c |} {res}3436.34  {txt}{c |} {res}      28  {txt}{c |}
+     {c LT}{hline 6}{c BT}{hline 1}{c TT}{hline 7}{c BT}{hline 3}{c TT}{hline 4}{c BT}{hline 6}{c TT}{hline 5}{c BT}{hline 3}{c TT}{hline 7}{c BT}{hline 1}{c TT}{hline 8}{c BT}{c TT}{hline 10}{c RT}
+     {c |} PERNUM {c |}    CPSIDP {c |}    CPSIDV {c |}  ASECWT {c |} POPSTAT {c |} EMPSTAT {c |} UHRSWO~T {c |}
+     {c |} {res}     1 {txt}{c |} {res}2.014e+13 {txt}{c |} {res}2.014e+14 {txt}{c |} {res}3436.34 {txt}{c |} {res}      1 {txt}{c |} {res}     36 {txt}{c |} {res}     999 {txt}{c |}
+     {c LT}{hline 8}{c BT}{hline 7}{c TT}{hline 3}{c BT}{hline 11}{c BT}{hline 2}{c TT}{hline 6}{c BT}{hline 9}{c BT}{hline 1}{c TT}{hline 7}{c BT}{hline 10}{c RT}
+     {c |}    INCWAGE     {c |}     total_~r     {c |}     WORKER~T     {c |}     STATE_~P     {c |}
+     {c |}    {res}      0     {txt}{c |}     {res}   51948     {txt}{c |}     {res}       0     {txt}{c |}     {res} 2991892     {txt}{c |}
+     {c BLC}{hline 16}{c BT}{hline 18}{c BT}{hline 18}{c BT}{hline 18}{c BRC}
+
+     {c TLC}{hline 6}{c TT}{hline 9}{c TT}{hline 8}{c TT}{hline 12}{c TT}{hline 11}{c TT}{hline 10}{c TT}{hline 11}{c TRC}
+  2. {c |} YEAR {c |} SERIAL  {c |} MONTH  {c |}     CPSID  {c |} ASECFLAG  {c |} ASECWTH  {c |} STATEFIP  {c |}
+     {c |} {res}2014 {txt}{c |} {res} 43607  {txt}{c |} {res}    3  {txt}{c |} {res}2.014e+13  {txt}{c |} {res}       1  {txt}{c |} {res}3436.34  {txt}{c |} {res}      28  {txt}{c |}
+     {c LT}{hline 6}{c BT}{hline 1}{c TT}{hline 7}{c BT}{hline 3}{c TT}{hline 4}{c BT}{hline 6}{c TT}{hline 5}{c BT}{hline 3}{c TT}{hline 7}{c BT}{hline 1}{c TT}{hline 8}{c BT}{c TT}{hline 10}{c RT}
+     {c |} PERNUM {c |}    CPSIDP {c |}    CPSIDV {c |}  ASECWT {c |} POPSTAT {c |} EMPSTAT {c |} UHRSWO~T {c |}
+     {c |} {res}     2 {txt}{c |} {res}2.014e+13 {txt}{c |} {res}2.014e+14 {txt}{c |} {res}3436.34 {txt}{c |} {res}      1 {txt}{c |} {res}     36 {txt}{c |} {res}     999 {txt}{c |}
+     {c LT}{hline 8}{c BT}{hline 7}{c TT}{hline 3}{c BT}{hline 11}{c BT}{hline 2}{c TT}{hline 6}{c BT}{hline 9}{c BT}{hline 1}{c TT}{hline 7}{c BT}{hline 10}{c RT}
+     {c |}    INCWAGE     {c |}     total_~r     {c |}     WORKER~T     {c |}     STATE_~P     {c |}
+     {c |}    {res}      0     {txt}{c |}     {res}   51948     {txt}{c |}     {res}       0     {txt}{c |}     {res} 2991892     {txt}{c |}
+     {c BLC}{hline 16}{c BT}{hline 18}{c BT}{hline 18}{c BT}{hline 18}{c BRC}
+
+     {c TLC}{hline 6}{c TT}{hline 9}{c TT}{hline 8}{c TT}{hline 12}{c TT}{hline 11}{c TT}{hline 10}{c TT}{hline 11}{c TRC}
+  3. {c |} YEAR {c |} SERIAL  {c |} MONTH  {c |}     CPSID  {c |} ASECFLAG  {c |} ASECWTH  {c |} STATEFIP  {c |}
+     {c |} {res}2014 {txt}{c |} {res} 43609  {txt}{c |} {res}    3  {txt}{c |} {res}2.014e+13  {txt}{c |} {res}       1  {txt}{c |} {res}3293.06  {txt}{c |} {res}      28  {txt}{c |}
+     {c LT}{hline 6}{c BT}{hline 1}{c TT}{hline 7}{c BT}{hline 3}{c TT}{hline 4}{c BT}{hline 6}{c TT}{hline 5}{c BT}{hline 3}{c TT}{hline 7}{c BT}{hline 1}{c TT}{hline 8}{c BT}{c TT}{hline 10}{c RT}
+     {c |} PERNUM {c |}    CPSIDP {c |}    CPSIDV {c |}  ASECWT {c |} POPSTAT {c |} EMPSTAT {c |} UHRSWO~T {c |}
+     {c |} {res}     1 {txt}{c |} {res}2.014e+13 {txt}{c |} {res}2.014e+14 {txt}{c |} {res}3293.06 {txt}{c |} {res}      1 {txt}{c |} {res}     10 {txt}{c |} {res}     997 {txt}{c |}
+     {c LT}{hline 8}{c BT}{hline 7}{c TT}{hline 3}{c BT}{hline 11}{c BT}{hline 2}{c TT}{hline 6}{c BT}{hline 9}{c BT}{hline 1}{c TT}{hline 7}{c BT}{hline 10}{c RT}
+     {c |}    INCWAGE     {c |}     total_~r     {c |}     WORKER~T     {c |}     STATE_~P     {c |}
+     {c |}    {res}      0     {txt}{c |}     {res}   51844     {txt}{c |}     {res}       0     {txt}{c |}     {res} 2991892     {txt}{c |}
+     {c BLC}{hline 16}{c BT}{hline 18}{c BT}{hline 18}{c BT}{hline 18}{c BRC}
+
+     {c TLC}{hline 6}{c TT}{hline 9}{c TT}{hline 8}{c TT}{hline 12}{c TT}{hline 11}{c TT}{hline 10}{c TT}{hline 11}{c TRC}
+  4. {c |} YEAR {c |} SERIAL  {c |} MONTH  {c |}     CPSID  {c |} ASECFLAG  {c |} ASECWTH  {c |} STATEFIP  {c |}
+     {c |} {res}2014 {txt}{c |} {res} 43609  {txt}{c |} {res}    3  {txt}{c |} {res}2.014e+13  {txt}{c |} {res}       1  {txt}{c |} {res}3293.06  {txt}{c |} {res}      28  {txt}{c |}
+     {c LT}{hline 6}{c BT}{hline 1}{c TT}{hline 7}{c BT}{hline 3}{c TT}{hline 4}{c BT}{hline 6}{c TT}{hline 5}{c BT}{hline 3}{c TT}{hline 7}{c BT}{hline 1}{c TT}{hline 8}{c BT}{c TT}{hline 10}{c RT}
+     {c |} PERNUM {c |}    CPSIDP {c |}    CPSIDV {c |}  ASECWT {c |} POPSTAT {c |} EMPSTAT {c |} UHRSWO~T {c |}
+     {c |} {res}     2 {txt}{c |} {res}2.014e+13 {txt}{c |} {res}2.014e+14 {txt}{c |} {res}3293.06 {txt}{c |} {res}      1 {txt}{c |} {res}     10 {txt}{c |} {res}      42 {txt}{c |}
+     {c LT}{hline 8}{c BT}{hline 7}{c TT}{hline 3}{c BT}{hline 11}{c BT}{hline 2}{c TT}{hline 6}{c BT}{hline 9}{c BT}{hline 1}{c TT}{hline 7}{c BT}{hline 10}{c RT}
+     {c |}    INCWAGE     {c |}     total_~r     {c |}     WORKER~T     {c |}     STATE_~P     {c |}
+     {c |}    {res}  43000     {txt}{c |}     {res}    2184     {txt}{c |}     {res}19.68864     {txt}{c |}     {res} 2991892     {txt}{c |}
+     {c BLC}{hline 16}{c BT}{hline 18}{c BT}{hline 18}{c BT}{hline 18}{c BRC}
+
+     {c TLC}{hline 6}{c TT}{hline 9}{c TT}{hline 8}{c TT}{hline 12}{c TT}{hline 11}{c TT}{hline 10}{c TT}{hline 11}{c TRC}
+  5. {c |} YEAR {c |} SERIAL  {c |} MONTH  {c |}     CPSID  {c |} ASECFLAG  {c |} ASECWTH  {c |} STATEFIP  {c |}
+     {c |} {res}2014 {txt}{c |} {res} 43620  {txt}{c |} {res}    3  {txt}{c |} {res}2.013e+13  {txt}{c |} {res}       1  {txt}{c |} {res}1442.08  {txt}{c |} {res}      28  {txt}{c |}
+     {c LT}{hline 6}{c BT}{hline 1}{c TT}{hline 7}{c BT}{hline 3}{c TT}{hline 4}{c BT}{hline 6}{c TT}{hline 5}{c BT}{hline 3}{c TT}{hline 7}{c BT}{hline 1}{c TT}{hline 8}{c BT}{c TT}{hline 10}{c RT}
+     {c |} PERNUM {c |}    CPSIDP {c |}    CPSIDV {c |}  ASECWT {c |} POPSTAT {c |} EMPSTAT {c |} UHRSWO~T {c |}
+     {c |} {res}     1 {txt}{c |} {res}2.013e+13 {txt}{c |} {res}2.013e+14 {txt}{c |} {res}1442.08 {txt}{c |} {res}      1 {txt}{c |} {res}     36 {txt}{c |} {res}     999 {txt}{c |}
+     {c LT}{hline 8}{c BT}{hline 7}{c TT}{hline 3}{c BT}{hline 11}{c BT}{hline 2}{c TT}{hline 6}{c BT}{hline 9}{c BT}{hline 1}{c TT}{hline 7}{c BT}{hline 10}{c RT}
+     {c |}    INCWAGE     {c |}     total_~r     {c |}     WORKER~T     {c |}     STATE_~P     {c |}
+     {c |}    {res}      0     {txt}{c |}     {res}   51948     {txt}{c |}     {res}       0     {txt}{c |}     {res} 2991892     {txt}{c |}
+     {c BLC}{hline 16}{c BT}{hline 18}{c BT}{hline 18}{c BT}{hline 18}{c BRC}
+
+     {c TLC}{hline 6}{c TT}{hline 9}{c TT}{hline 8}{c TT}{hline 12}{c TT}{hline 11}{c TT}{hline 10}{c TT}{hline 11}{c TRC}
+  6. {c |} YEAR {c |} SERIAL  {c |} MONTH  {c |}     CPSID  {c |} ASECFLAG  {c |} ASECWTH  {c |} STATEFIP  {c |}
+     {c |} {res}2014 {txt}{c |} {res} 43621  {txt}{c |} {res}    3  {txt}{c |} {res}2.013e+13  {txt}{c |} {res}       1  {txt}{c |} {res}1546.91  {txt}{c |} {res}      28  {txt}{c |}
+     {c LT}{hline 6}{c BT}{hline 1}{c TT}{hline 7}{c BT}{hline 3}{c TT}{hline 4}{c BT}{hline 6}{c TT}{hline 5}{c BT}{hline 3}{c TT}{hline 7}{c BT}{hline 1}{c TT}{hline 8}{c BT}{c TT}{hline 10}{c RT}
+     {c |} PERNUM {c |}    CPSIDP {c |}    CPSIDV {c |}  ASECWT {c |} POPSTAT {c |} EMPSTAT {c |} UHRSWO~T {c |}
+     {c |} {res}     1 {txt}{c |} {res}2.013e+13 {txt}{c |} {res}2.013e+14 {txt}{c |} {res}1546.91 {txt}{c |} {res}      1 {txt}{c |} {res}     36 {txt}{c |} {res}     999 {txt}{c |}
+     {c LT}{hline 8}{c BT}{hline 7}{c TT}{hline 3}{c BT}{hline 11}{c BT}{hline 2}{c TT}{hline 6}{c BT}{hline 9}{c BT}{hline 1}{c TT}{hline 7}{c BT}{hline 10}{c RT}
+     {c |}    INCWAGE     {c |}     total_~r     {c |}     WORKER~T     {c |}     STATE_~P     {c |}
+     {c |}    {res}      0     {txt}{c |}     {res}   51948     {txt}{c |}     {res}       0     {txt}{c |}     {res} 2991892     {txt}{c |}
+     {c BLC}{hline 16}{c BT}{hline 18}{c BT}{hline 18}{c BT}{hline 18}{c BRC}
+
+     {c TLC}{hline 6}{c TT}{hline 9}{c TT}{hline 8}{c TT}{hline 12}{c TT}{hline 11}{c TT}{hline 10}{c TT}{hline 11}{c TRC}
+  7. {c |} YEAR {c |} SERIAL  {c |} MONTH  {c |}     CPSID  {c |} ASECFLAG  {c |} ASECWTH  {c |} STATEFIP  {c |}
+     {c |} {res}2014 {txt}{c |} {res} 43621  {txt}{c |} {res}    3  {txt}{c |} {res}2.013e+13  {txt}{c |} {res}       1  {txt}{c |} {res}1546.91  {txt}{c |} {res}      28  {txt}{c |}
+     {c LT}{hline 6}{c BT}{hline 1}{c TT}{hline 7}{c BT}{hline 3}{c TT}{hline 4}{c BT}{hline 6}{c TT}{hline 5}{c BT}{hline 3}{c TT}{hline 7}{c BT}{hline 1}{c TT}{hline 8}{c BT}{c TT}{hline 10}{c RT}
+     {c |} PERNUM {c |}    CPSIDP {c |}    CPSIDV {c |}  ASECWT {c |} POPSTAT {c |} EMPSTAT {c |} UHRSWO~T {c |}
+     {c |} {res}     2 {txt}{c |} {res}2.013e+13 {txt}{c |} {res}2.013e+14 {txt}{c |} {res} 3744.8 {txt}{c |} {res}      1 {txt}{c |} {res}     34 {txt}{c |} {res}     999 {txt}{c |}
+     {c LT}{hline 8}{c BT}{hline 7}{c TT}{hline 3}{c BT}{hline 11}{c BT}{hline 2}{c TT}{hline 6}{c BT}{hline 9}{c BT}{hline 1}{c TT}{hline 7}{c BT}{hline 10}{c RT}
+     {c |}    INCWAGE     {c |}     total_~r     {c |}     WORKER~T     {c |}     STATE_~P     {c |}
+     {c |}    {res}      0     {txt}{c |}     {res}   51948     {txt}{c |}     {res}       0     {txt}{c |}     {res} 2991892     {txt}{c |}
+     {c BLC}{hline 16}{c BT}{hline 18}{c BT}{hline 18}{c BT}{hline 18}{c BRC}
+
+     {c TLC}{hline 6}{c TT}{hline 9}{c TT}{hline 8}{c TT}{hline 12}{c TT}{hline 11}{c TT}{hline 10}{c TT}{hline 11}{c TRC}
+  8. {c |} YEAR {c |} SERIAL  {c |} MONTH  {c |}     CPSID  {c |} ASECFLAG  {c |} ASECWTH  {c |} STATEFIP  {c |}
+     {c |} {res}2014 {txt}{c |} {res} 43622  {txt}{c |} {res}    3  {txt}{c |} {res}2.014e+13  {txt}{c |} {res}       1  {txt}{c |} {res}4174.79  {txt}{c |} {res}      28  {txt}{c |}
+     {c LT}{hline 6}{c BT}{hline 1}{c TT}{hline 7}{c BT}{hline 3}{c TT}{hline 4}{c BT}{hline 6}{c TT}{hline 5}{c BT}{hline 3}{c TT}{hline 7}{c BT}{hline 1}{c TT}{hline 8}{c BT}{c TT}{hline 10}{c RT}
+     {c |} PERNUM {c |}    CPSIDP {c |}    CPSIDV {c |}  ASECWT {c |} POPSTAT {c |} EMPSTAT {c |} UHRSWO~T {c |}
+     {c |} {res}     1 {txt}{c |} {res}2.014e+13 {txt}{c |} {res}2.014e+14 {txt}{c |} {res}4174.79 {txt}{c |} {res}      1 {txt}{c |} {res}     10 {txt}{c |} {res}      40 {txt}{c |}
+     {c LT}{hline 8}{c BT}{hline 7}{c TT}{hline 3}{c BT}{hline 11}{c BT}{hline 2}{c TT}{hline 6}{c BT}{hline 9}{c BT}{hline 1}{c TT}{hline 7}{c BT}{hline 10}{c RT}
+     {c |}    INCWAGE     {c |}     total_~r     {c |}     WORKER~T     {c |}     STATE_~P     {c |}
+     {c |}    {res}  45000     {txt}{c |}     {res}    2080     {txt}{c |}     {res}21.63461     {txt}{c |}     {res} 2991892     {txt}{c |}
+     {c BLC}{hline 16}{c BT}{hline 18}{c BT}{hline 18}{c BT}{hline 18}{c BRC}
+
+     {c TLC}{hline 6}{c TT}{hline 9}{c TT}{hline 8}{c TT}{hline 12}{c TT}{hline 11}{c TT}{hline 10}{c TT}{hline 11}{c TRC}
+  9. {c |} YEAR {c |} SERIAL  {c |} MONTH  {c |}     CPSID  {c |} ASECFLAG  {c |} ASECWTH  {c |} STATEFIP  {c |}
+     {c |} {res}2014 {txt}{c |} {res} 43622  {txt}{c |} {res}    3  {txt}{c |} {res}2.014e+13  {txt}{c |} {res}       1  {txt}{c |} {res}4174.79  {txt}{c |} {res}      28  {txt}{c |}
+     {c LT}{hline 6}{c BT}{hline 1}{c TT}{hline 7}{c BT}{hline 3}{c TT}{hline 4}{c BT}{hline 6}{c TT}{hline 5}{c BT}{hline 3}{c TT}{hline 7}{c BT}{hline 1}{c TT}{hline 8}{c BT}{c TT}{hline 10}{c RT}
+     {c |} PERNUM {c |}    CPSIDP {c |}    CPSIDV {c |}  ASECWT {c |} POPSTAT {c |} EMPSTAT {c |} UHRSWO~T {c |}
+     {c |} {res}     2 {txt}{c |} {res}2.014e+13 {txt}{c |} {res}2.014e+14 {txt}{c |} {res}4174.79 {txt}{c |} {res}      1 {txt}{c |} {res}     10 {txt}{c |} {res}      40 {txt}{c |}
+     {c LT}{hline 8}{c BT}{hline 7}{c TT}{hline 3}{c BT}{hline 11}{c BT}{hline 2}{c TT}{hline 6}{c BT}{hline 9}{c BT}{hline 1}{c TT}{hline 7}{c BT}{hline 10}{c RT}
+     {c |}    INCWAGE     {c |}     total_~r     {c |}     WORKER~T     {c |}     STATE_~P     {c |}
+     {c |}    {res}  20000     {txt}{c |}     {res}    2080     {txt}{c |}     {res}9.615385     {txt}{c |}     {res} 2991892     {txt}{c |}
+     {c BLC}{hline 16}{c BT}{hline 18}{c BT}{hline 18}{c BT}{hline 18}{c BRC}
+
+     {c TLC}{hline 6}{c TT}{hline 9}{c TT}{hline 8}{c TT}{hline 12}{c TT}{hline 11}{c TT}{hline 10}{c TT}{hline 11}{c TRC}
+ 10. {c |} YEAR {c |} SERIAL  {c |} MONTH  {c |}     CPSID  {c |} ASECFLAG  {c |} ASECWTH  {c |} STATEFIP  {c |}
+     {c |} {res}2014 {txt}{c |} {res} 43623  {txt}{c |} {res}    3  {txt}{c |} {res}2.013e+13  {txt}{c |} {res}       1  {txt}{c |} {res}1794.67  {txt}{c |} {res}      28  {txt}{c |}
+     {c LT}{hline 6}{c BT}{hline 1}{c TT}{hline 7}{c BT}{hline 3}{c TT}{hline 4}{c BT}{hline 6}{c TT}{hline 5}{c BT}{hline 3}{c TT}{hline 7}{c BT}{hline 1}{c TT}{hline 8}{c BT}{c TT}{hline 10}{c RT}
+     {c |} PERNUM {c |}    CPSIDP {c |}    CPSIDV {c |}  ASECWT {c |} POPSTAT {c |} EMPSTAT {c |} UHRSWO~T {c |}
+     {c |} {res}     1 {txt}{c |} {res}2.013e+13 {txt}{c |} {res}2.013e+14 {txt}{c |} {res}1794.67 {txt}{c |} {res}      1 {txt}{c |} {res}     10 {txt}{c |} {res}      14 {txt}{c |}
+     {c LT}{hline 8}{c BT}{hline 7}{c TT}{hline 3}{c BT}{hline 11}{c BT}{hline 2}{c TT}{hline 6}{c BT}{hline 9}{c BT}{hline 1}{c TT}{hline 7}{c BT}{hline 10}{c RT}
+     {c |}    INCWAGE     {c |}     total_~r     {c |}     WORKER~T     {c |}     STATE_~P     {c |}
+     {c |}    {res}   9000     {txt}{c |}     {res}     728     {txt}{c |}     {res}12.36264     {txt}{c |}     {res} 2991892     {txt}{c |}
+     {c BLC}{hline 16}{c BT}{hline 18}{c BT}{hline 18}{c BT}{hline 18}{c BRC}
+
+{com}. 
+. preserve
+{err}already preserved
+{txt}{search r(621), local:r(621);}
+
+{com}. 
+. save "combined_data.dta", replace
+{txt}{p 0 4 2}
+file {bf}
+combined_data.dta{rm}
+saved
+{p_end}
+
+{com}. gen period = 0
+
+. 
+. replace period = 1 if YEAR >=2014
+{txt}(30,691 real changes made)
+
+{com}. gen treat = 0
+
+. 
+. replace treat = 1 if STATEFIP == 5
+{txt}(27,702 real changes made)
+
+{com}. gen period_treat = period * treat
+
+. gen employed = 0
+
+. 
+. replace employed = 1 if EMPSTAT == 10 | EMPSTAT == 12
+{txt}(22,500 real changes made)
+
+{com}. gen labor_force_indicator = 0
+
+. 
+. replace labor_force_indicator = 1 if EMPSTAT == 10 | EMPSTAT == 12 | EMPSTAT == 21 | EMPSTAT == 22
+{txt}(24,059 real changes made)
+
+{com}. egen total_labor_force = total(labor_force_indicator), by(STATEFIP YEAR)
+
+. 
+. egen total_employed = total(employed), by(STATEFIP YEAR)
+
+. 
+. gen employment_percentage = (total_employed / total_labor_force) * 100
+
+. summarize employment_percentage period treat period_treat WORKER_PRODUCT STATE_POP
+
+{txt}    Variable {c |}        Obs        Mean    Std. dev.       Min        Max
+{hline 13}{c +}{hline 57}
+employment~e {c |}{res}     54,723    93.50107    2.303509   87.88222   96.87708
+{txt}{space 6}period {c |}{res}     54,723    .5608428    .4962889          0          1
+{txt}{space 7}treat {c |}{res}     54,723    .5062222    .4999659          0          1
+{txt}period_treat {c |}{res}     54,723    .2776895    .4478635          0          1
+{txt}WORKER_PRO~T {c |}{res}     54,723    450.9394      807.15          0   3525.638
+{txt}{hline 13}{c +}{hline 57}
+{space 3}STATE_POP {c |}{res}     54,723     2966120    37457.05    2874554    3012161
+
+{com}. ssc install outreg2, replace
+{txt}checking {hilite:outreg2} consistency and verifying not already installed...
+all files already exist and are up to date.
+
+{com}. 
+. regress employment_percentage i.period i.treat period_treat WORKER_PRODUCT STATE_POP, cluster(STATEFIP)
+
+{txt}Linear regression                               Number of obs     = {res}    54,723
+                                                {txt}{help j_robustsingular:F(0, 1) }          =  {res}        .
+                                                {txt}Prob > F          = {res}         .
+                                                {txt}R-squared         = {res}    0.5592
+                                                {txt}Root MSE          =    {res} 1.5294
+
+{txt}{ralign 79:(Std. err. adjusted for {res:2} clusters in {res:STATEFIP})}
+{hline 14}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 15}{c |}{col 27}    Robust
+{col 1}employment_~e{col 15}{c |} Coefficient{col 27}  std. err.{col 39}      t{col 47}   P>|t|{col 55}     [95% con{col 68}f. interval]
+{hline 14}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}1.period {c |}{col 15}{res}{space 2} 3.096325{col 27}{space 2} .0117241{col 38}{space 1}  264.10{col 47}{space 3}0.002{col 55}{space 4} 2.947357{col 68}{space 3} 3.245294
+{txt}{space 6}1.treat {c |}{col 15}{res}{space 2} 1.082638{col 27}{space 2} .2712388{col 38}{space 1}    3.99{col 47}{space 3}0.156{col 55}{space 4}-2.363778{col 68}{space 3} 4.529054
+{txt}{space 1}period_treat {c |}{col 15}{res}{space 2} .7494592{col 27}{space 2} .4055358{col 38}{space 1}    1.85{col 47}{space 3}0.316{col 55}{space 4}-4.403361{col 68}{space 3}  5.90228
+{txt}WORKER_PROD~T {c |}{col 15}{res}{space 2}-3.26e-06{col 27}{space 2} 2.16e-08{col 38}{space 1} -151.25{col 47}{space 3}0.004{col 55}{space 4}-3.54e-06{col 68}{space 3}-2.99e-06
+{txt}{space 4}STATE_POP {c |}{col 15}{res}{space 2}-.0000138{col 27}{space 2} 5.72e-06{col 38}{space 1}   -2.42{col 47}{space 3}0.249{col 55}{space 4}-.0000865{col 68}{space 3} .0000588
+{txt}{space 8}_cons {c |}{col 15}{res}{space 2} 132.0817{col 27}{space 2}  16.9849{col 38}{space 1}    7.78{col 47}{space 3}0.081{col 55}{space 4}-83.73193{col 68}{space 3} 347.8953
+{txt}{hline 14}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}
+{com}. outreg2 using "H:/regression_results_table_final.doc", replace ctitle("Difference-in-Differences Regression Results")
+{err}file using "H:/regression_results_table_final.doc" is read-only; cannot be modified or erased
+The file needs to be closed if being used by another software such as Word.
+{txt}{search r(608), local:r(608);}
+
+{com}. 
+.     se star(* 0.10 ** 0.05 *** 0.01) r2
+{err}-set star- not allowed; 'star' not recognized
+{txt}{search r(199), local:r(199);}
+
+{com}. ssc install lgraph
+{txt}checking {hilite:lgraph} consistency and verifying not already installed...
+all files already exist and are up to date.
+
+{com}. 
+. collapse (mean) employment_percentage, by(YEAR treat) 
+{res}
+{com}. 
+. lgraph employment_percentage YEAR, by(treat) xline(2014)
+{res}
+{com}. log close
+      {txt}name:  {res}<unnamed>
+       {txt}log:  {res}H:\ECON_308_RP_Final_Log.smcl
+  {txt}log type:  {res}smcl
+ {txt}closed on:  {res} 6 Dec 2024, 21:22:18
+{txt}{.-}
+{smcl}
+{txt}{sf}{ul off}
